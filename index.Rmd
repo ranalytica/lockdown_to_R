@@ -1,0 +1,30 @@
+--- 
+title: "Lockdown to R-Full-stack"
+author: "Richard Nacianceno"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "This is my journey to R programming."
+---
+
+# Overview
+
+This is my journey during Covid 19 lock-down in the US and how I was able to learn R programming through [Coursera - JHU Data Science Specialization](https://www.coursera.org/specializations/jhu-data-science) program.  
+
+The program consist of 10 courses that covers the following:
+
+1. **The Data Scientist’s Toolbox**
+2. **R Programming**
+3. **Getting and Cleaning Data**
+4. **Exploratory Data Analysis**
+5. **Reproducible Research**
+6. **Statistical Inference**
+7. **Regression Models**
+8. **Practical Machine Learning**
+9. **Developing Data Products**
+10. **Data Science Capstone**
+
+It was March 2020 when I signed up for Coursera Plus subscription. 
