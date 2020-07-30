@@ -1,8 +1,14 @@
-# Introduction {#intro}
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+# Beginning {#intro}
 
-## Lesson
+It was March 2020, I was still traumatize that Andrew Yang drop-out for the presidential race. The other headline news during these time frame was about Syrian Civil War, Coronavirus pandemic, European migrant crisis, and the presidential race in the United States [@headline]. 
 
-You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+I was very optimistic that United States will not have a pandemic in any of its states or properties. At the same time, I was amazed at the many dashboards that were created to monitor the Covid-19. Curiosity got the best of me and I decided to sign-up for the Coursera - Johns Hopkins University Data Science Specialization [@dss]. 
+
 
 Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
 
