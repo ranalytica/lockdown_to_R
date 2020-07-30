@@ -46,7 +46,7 @@ Professor Roger D. Peng, PhD, Professor Brian Caffo, PhD and Professor Jeff Leek
 <div align="center">“I had a dream about you. It's been a while<br>since I could remember any of my dreams,<br>and still, this one has left me with such strong impression.<br>[@ninkovic]"</div>
 <br>
 
-That quote from Aleksandra is one of the many stories that occurred to me while taking these courses. It is not easy. You need perseverance and continuously seeking knowledge. There were nights that turned to days and nights to day and back to night because I could not figure out how to solve a problem. My brain was constantly looking for a solution. Once you solved it, you then moved on to the next challenge with the same twist of time. It gets better `r emo::ji("smile")`.
+That quote from Aleksandra is one of the many stories that occurred to me while taking these courses. It is not easy. You need perseverance and continuously seeking knowledge. There were nights that turned to days and nights to day and back to night because I could not figure out how to solve a problem. My brain was constantly looking for a solution. Once you solved it, you then moved on to the next challenge with the same twist of time. It gets better `r emo::ji("smile")` [@emo].
 
 There was no way for me to complete this program without the help of [google.com](https://google.com), Yihue Xie, PhD - books, Professor Handley Wickham, PhD - books and to all the people that contributed to [stackoverflow](https://stackoverflow.com/) - Thank You.  
 
