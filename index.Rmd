@@ -16,7 +16,7 @@ library(emo)
 
 # Overview {-}
 
-This is my journey during Covid-19 lockdown in the US and how I was able to learn R programming through Coursera - JHU Data Science Specialization [@dss]. I will provide the "ah-ha" moment during this journey.  
+This is my journey during Covid-19 lockdown in the US and how I was able to learn R programming through Coursera - JHU Data Science Specialization [@dss]. I enrolled for the course in March of 2020 and I will provide the "ah-ha" moment of my journey.
 
 The program consists of 10 courses that covers the following:
 
@@ -31,7 +31,7 @@ The program consists of 10 courses that covers the following:
 9. **Developing Data Products**
 10. **Data Science Capstone**
 
-On July 29, 2020, I'm currently at #10 - Data Science Capstone - Week 1. The entire data science specialization can be completed in less than 11 months based on your desire to learn. I've put in an average of 5 hours per day in each courses. The reason I wanted to learn these materials so fast are as follows: 
+As of today, July 29, 2020 I'm currently at course 10 Data Science Capstone - Week 1. The entire data science specialization can be completed in less than 11 months based on your desire to learn. I've put in an average of 5 hours per day in each courses. The reason I wanted to learn these materials so fast are as follows: 
 
 - Personal growth 
 - Love dissecting data for insights

@@ -1,9 +1,4 @@
----
-output:
-  html_document: default
-  pdf_document: default
----
-# Introduction {#intro}
+# Introduction 
 
 It was March 2020, still traumatize that Andrew Yang drop-out from the presidential race. The only candidate that is data informed and very original. The other headline news during these time frame were about Syrian Civil War, Coronavirus pandemic, European migrant crisis, and the presidential race in the United States [@headline]. 
 

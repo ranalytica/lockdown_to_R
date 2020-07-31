@@ -1,3 +1,8 @@
 # Data Science Toolbox
 
-Here is a review of existing methods.
+To do
+- Deadline - First week of Aug
+- Gather old notes from class and code it here
+- review index file and page 1 - grammar and storyline
+- Find a way to publish the book once everything is completed
+- Good luck.
