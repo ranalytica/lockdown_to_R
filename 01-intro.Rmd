@@ -3,27 +3,85 @@ output:
   html_document: default
   pdf_document: default
 ---
-# Beginning {#intro}
+# Introduction {#intro}
 
-It was March 2020, I was still traumatize that Andrew Yang drop-out for the presidential race. The other headline news during these time frame was about Syrian Civil War, Coronavirus pandemic, European migrant crisis, and the presidential race in the United States [@headline]. 
+It was March 2020, still traumatize that Andrew Yang drop-out from the presidential race. The only candidate that is data informed and very original. The other headline news during these time frame were about Syrian Civil War, Coronavirus pandemic, European migrant crisis, and the presidential race in the United States [@headline]. 
 
-I was very optimistic that United States will not have a pandemic in any of its states or properties. At the same time, I was amazed at the many dashboards that were created to monitor the Covid-19. Curiosity got the best of me and I decided to sign-up for the Coursera - Johns Hopkins University Data Science Specialization [@dss]. 
+I was very optimistic that United States will not have a pandemic in any of its states or properties. At the same time, I was amazed at the many dashboards that were created to monitor the spread of Covid-19 globally. Below is an example code of how easy to pull information and create your own dashboards and map visualization.
+
+```{r message=FALSE, warning=FALSE}
+library(COVID19)
+library(dplyr)
+library(DT)
+library(knitr)
+library(kableExtra)
+
+X <- covid19()
+MarchCovid <- X %>% filter(date == "2020-03-31") %>% 
+  select(
+    administrative_area_level_1,
+    date,
+    confirmed,
+    recovered,
+    deaths
+  ) %>% arrange(desc(confirmed)) %>% 
+    rename(country = 
+             administrative_area_level_1)
+
+MarchCovid[1:10, ] %>% kable(caption = 'March 2020 Covid19 Metrics') %>% kable_styling()
+```
+I started the Data Science Specialization when Covid-19 cases were below 200,000 in the US. These numbers are peoples families, love ones or neighbors and our lives have forever change.  
+
+Map visualization can be accomplish with many packages available in R.  One of them is called leaflet package and below will show us how aggressive the spread of Covid19 through out the globe during the end of **March 2020**. 
+
+<details><summary>**View Code**</summary>
 
 
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
+```{r mapLeaflet, message=FALSE, warning=FALSE}
+library(leaflet)
+library(viridisLite)
+library(viridis)
 
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
+mapVisData <- X %>% filter(date == "2020-03-31") %>%    
+    rename(country=administrative_area_level_1)  %>% 
+    select(country,
+          date,
+          longitude,
+          latitude,
+          confirmed,
+          recovered,
+          deaths)
+CountryColor <- colorFactor(viridis(76), mapVisData$country)
+
+map1 <- leaflet(data = mapVisData) %>% addTiles() %>% 
+          setView(lng = 26.8206,
+                lat = 30.8025,
+                zoom = 2) %>% 
+          addCircleMarkers(
+             ~ longitude,
+             ~ latitude,
+             popup = paste(
+               "Country: ",prettyNum(mapVisData$country, big.mark = ","), 
+               "<br>",
+               "Confirmed: ",prettyNum(mapVisData$confirmed, big.mark = ","), 
+               "<br>",
+               "Recovered: ", prettyNum(mapVisData$recovered, big.mark = ","), 
+               "<br>",
+               "Deaths: ", prettyNum(mapVisData$deaths, big.mark = ",")),
+             weight = 1,
+             radius = ~ sqrt(confirmed)*.1,
+             stroke = FALSE,
+             fillOpacity = .7,
+             fillColor = ~CountryColor(country)
+        ) 
+```
+</details>
+
+```{r mapvis, fig.cap='[@leaflet]'}
+map1
 ```
 
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
+<br>
+At the beginning of the class, I was not able to code the way I code in R now. The progression and knowledge skills increase as I consume more of the information. Again, I had vivid dreams while taking these classes and if you decided to pursue the same route, may you have sweetest of all dreams. 
 
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
-```
 
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
