@@ -1,6 +1,7 @@
 # Data Science Toolbox
 
 To do
+
 - Deadline - First week of Aug
 - Gather old notes from class and code it here
 - review index file and page 1 - grammar and storyline
