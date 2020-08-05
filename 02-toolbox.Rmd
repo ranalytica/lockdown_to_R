@@ -1,9 +1,176 @@
 # Data Science Toolbox
 
-To do
+The Data Science Toolbox provides a basic foundation in creating a work environment as a data scientist. This environment is based on the R language. It is an environment for statistical computing and graphics and so much more. It is similar to the S language developed at Bell Laboratories by John Chambers and his team [@wiki]. R language is created by Ross Ihaka and Robert Gentleman at the University of Auckland, New Zealand and is developed by the R Development Core Team. Thus, R is named after the first initials of the co-creators Ross & Robert [@wikipedia]. 
 
-- Deadline - First week of Aug
-- Gather old notes from class and code it here
-- review index file and page 1 - grammar and storyline
-- Find a way to publish the book once everything is completed
-- Good luck.
+## So Much More
+
+R language is use in many industries such as research in academia, pharmaceutical for clinical trials, finance for risk management, social media for natural language processing and sentiment analysis, manufacturing for predicting demand and market trends and many more.
+
+Below is an example of a reproducible expression in building a simple metric stock analysis in R combined with shiny. We will look into NIO and SPY with a starting date of Jun 01, 2020. 
+
+<details><summary>**View Code**</summary>
+```{r stock, message=FALSE, warning=FALSE}
+library(shiny)
+library(plotly)
+library(tidyquant)
+library(ggplot2)
+library(dplyr)
+library(shinydashboard)
+library(dygraphs)
+library(timetk)
+library(glue)
+
+# You can change to whatever ticker you want
+ticker <- c("NIO", "SPY")
+# tidyquant package for tidy format
+StockData <- tq_get(ticker, from = "2020-06-01")
+# table format
+table3.1 <- StockData[1:6,] %>% kable(caption = 'NIO vs. SPY') %>% kable_styling()
+```
+</details>
+```{r}
+table3.1
+```
+
+Below is time series chart of NIO's Closing Price. 
+
+<details><summary>**View Code**</summary>
+```{r TS, message=FALSE, warning=FALSE}
+g2<-StockData %>% filter(symbol == "NIO") %>% select(symbol, date, close) %>% 
+  spread(key = symbol, value = close) %>% tk_xts() %>% 
+  dygraph(main = "NIO Price History", ylab = "Price") %>% dyRangeSelector()
+```
+</details>
+<div align="center">**NIO Stock Price**</div>
+```{r message=FALSE, warning=FALSE, fig.cap='NIO Price'}
+g2
+```
+
+Compare NIO to an Index.
+
+<details><summary>**View Code**</summary>
+```{r compare, message=FALSE, warning=FALSE}
+g3 <- StockData %>% select(symbol, date, close) %>% 
+  spread(key=symbol, value = close) %>% 
+  tk_xts() %>% 
+  dygraph(main = "NIO vs. SPY") %>% 
+  dyRebase(value = 1) %>% 
+  dyRangeSelector()
+```
+</details>
+```{r vs,fig.cap='NIO vs. SPY'}
+g3
+```
+
+Stock Price distribution 
+<details><summary>**View Code**</summary>
+```{r distribution, message=FALSE, warning=FALSE}
+fd=function(x) {
+  n=length(x)
+  r=IQR(x)
+  2*r/n^(1/3)
+}
+Stock_Dist <- StockData %>% 
+    filter(symbol=="NIO")
+  
+
+p2 <- ggplot(Stock_Dist, 
+    aes(x=close)) +
+  geom_histogram(aes(y=..density..),
+     color="black",
+     fill="grey") +
+  geom_density(alpha=.2, 
+               fill="#FF6666") + 
+  labs(x="NIO", 
+     y="Frequency",
+     title = "NIO Price Distribution")
+```
+</details>
+
+Interactive graph with Plotly. 
+
+```{r fig.cap='plotly and ggplot2 package'}
+ggplotly(p2)
+```
+
+Base R graphics.
+
+```{r baseplot,fig.cap='base r visuals'}
+hist(Stock_Dist$close, 
+     breaks=30,
+     main = "NIO Price Distribution", 
+     xlab = "Price"
+     )
+```
+We can see from figure [@baseplot] that the 
+
+
+## What 
+
+The first 2 weeks course discussions are as follows:
+
+- What is Data Science
+- What is Data
+- What is Data Scientist
+- R installation
+- RStudio installation
+- R packages
+
+Third and fourth week discussion as follows:
+
+- Git and Github
+- Linking Github to RStudio
+- Formulating Data Science questions
+- Experimental Design
+- What is Big Data
+
+## What is Data Science?
+
+Data Science, some call it sexy, others call it 
+
+Create a Venn Diagram
+<details><summary>**View Code**</summary>
+```{r fig.width=6}
+library(tidyverse)
+library(ggforce)
+
+## Data frame - All of the arguments below are required to build the venn diagram. 
+
+VennDS <- tibble(
+  # Center of each circles
+  x = c(0, 1,-1),  
+  y = c(-0.5, 1, 1),
+  # label coordinates if needed
+  tx = NULL,
+  ty = NULL,
+  cat = c('Variety', 'Velocity',
+          'Volume')
+)
+# ggplot argument x0, y0, r are all required,
+vennd <- ggplot(VennDS, aes(
+  x0 = x,
+  y0 = y,
+  r = 1.5,
+  fill = cat
+)) + geom_circle(
+  alpha = 0.25,
+  size = 1,
+  color = "transparent",
+  show.legend = FALSE) + 
+  # using geom_text to draw on the graph
+  geom_text(aes(x = -1.5 , y = 1, label = "Volume"), size = 5) +       
+  geom_text(aes(x = 1.5 , y = 1, label = "Velocity"), size = 5) +
+  geom_text(aes(x = 0 , y = -1, label = "Variety"), size = 5) +
+  geom_text(aes(x = 0 , y = .75, label = "Big Data"), size = 5)
+```
+</details>
+```{r fig.cap='[@ggforce]'}
+vennd 
+```
+
+## What is Data?
+
+## What is a data scientist?
+
+<div align="center">“who combines the skills of software programmer,<br> statistician and storyteller slash artist to extract<br>the nuggets of gold hidden under mountains of data”<br>[@economist]</div>
+

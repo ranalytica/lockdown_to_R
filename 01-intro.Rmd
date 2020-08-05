@@ -4,13 +4,14 @@ It was March 2020, still traumatize that Andrew Yang drop-out from the president
 
 I was very optimistic that United States will not have a pandemic in any of its states or properties. At the same time, I was amazed at the many dashboards that were created to monitor the spread of Covid-19 globally. Below is an example code of how easy to pull information and create your own dashboards and map visualization.
 
+<details><summary>**View Code**</summary>
 ```{r message=FALSE, warning=FALSE}
 library(COVID19)
 library(dplyr)
 library(DT)
 library(knitr)
 library(kableExtra)
-
+# grab data from library COVID19
 X <- covid19(verbose = FALSE)
 MarchCovid <- X %>% filter(date == "2020-03-31") %>% 
   select(
@@ -22,58 +23,76 @@ MarchCovid <- X %>% filter(date == "2020-03-31") %>%
   ) %>% arrange(desc(confirmed)) %>% 
     rename(country = 
              administrative_area_level_1)
-
-MarchCovid[1:10, ] %>% kable(caption = 'March 2020 Covid19 Metrics') %>% kable_styling()
+## Turn to table
+Table_1.1 <- MarchCovid[1:10, ] %>% 
+  kable(caption = 'March 2020 Covid19 Metrics') %>%   
+  kable_styling()
 ```
-I started the Data Science Specialization when Covid-19 cases were below 200,000 in the US. These numbers are peoples families, love ones or neighbors and our lives have forever change.  
+</details>
+
+```{r}
+Table_1.1
+```
+
+I started the Data Science Specialization when Covid-19 cases were below 200,000 in the US. These numbers affected peoples lives, their families, love ones and neighbors. It change the way we shop, travel, and live. It made us value our homes and the kitchen became the center of the house again.   
 
 Map visualization can be accomplish with many packages available in R.  One of them is called leaflet package and below will show us how aggressive the spread of Covid19 through out the globe during the end of **March 2020**. 
 
 <details><summary>**View Code**</summary>
-
-
 ```{r mapLeaflet, message=FALSE, warning=FALSE}
 library(leaflet)
 library(viridisLite)
 library(viridis)
-
-mapVisData <- X %>% filter(date == "2020-03-31") %>%    
-    rename(country=administrative_area_level_1)  %>% 
-    select(country,
+# Create a map using Leaflet
+mapVisData <- X %>% 
+  filter(date == "2020-03-31") %>%    
+  rename(country=administrative_area_level_1)  %>% 
+  select(country,
           date,
           longitude,
           latitude,
           confirmed,
           recovered,
           deaths)
-CountryColor <- colorFactor(viridis(76), mapVisData$country)
+# Color code with viridislite and viridis
+CountryColor <- colorFactor(
+  viridis(76), mapVisData$country)
 
-map1 <- leaflet(data = mapVisData) %>% addTiles() %>% 
-          setView(lng = 26.8206,
-                lat = 30.8025,
-                zoom = 2) %>% 
-          addCircleMarkers(
-             ~ longitude,
-             ~ latitude,
-             popup = paste(
-               "Country: ",prettyNum(mapVisData$country, big.mark = ","), 
-               "<br>",
-               "Confirmed: ",prettyNum(mapVisData$confirmed, big.mark = ","), 
-               "<br>",
-               "Recovered: ", prettyNum(mapVisData$recovered, big.mark = ","), 
-               "<br>",
-               "Deaths: ", prettyNum(mapVisData$deaths, big.mark = ",")),
-             weight = 1,
-             radius = ~ sqrt(confirmed)*.1,
-             stroke = FALSE,
-             fillOpacity = .7,
-             fillColor = ~CountryColor(country)
-        ) 
+Figure_1.1 <- leaflet(data = mapVisData) %>% 
+  addTiles() %>% 
+  setView(lng = 26.8206,
+        lat = 30.8025,
+        zoom = 2) %>% 
+  addCircleMarkers(
+     ~ longitude,
+     ~ latitude,
+     popup = paste(
+     "Country: ",prettyNum(
+       mapVisData$country, 
+       big.mark = ","), 
+     "<br>",
+     "Confirmed: ",prettyNum(
+       mapVisData$confirmed, 
+       big.mark = ","), 
+     "<br>",
+     "Recovered: ", prettyNum(
+       mapVisData$recovered, 
+       big.mark = ","), 
+     "<br>",
+     "Deaths: ", prettyNum(
+       mapVisData$deaths, 
+       big.mark = ",")),
+   weight = 1,
+   radius = ~ sqrt(confirmed)*.1,
+   stroke = FALSE,
+   fillOpacity = .7,
+   fillColor = ~CountryColor(country)
+) 
 ```
 </details>
 
-```{r mapvis, fig.cap='[@leaflet]'}
-map1
+```{r mapvis, fig.cap='End of March - Covid19 [@leaflet]'}
+Figure_1.1
 ```
 
 <br>
