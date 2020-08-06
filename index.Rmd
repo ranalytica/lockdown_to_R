@@ -1,5 +1,5 @@
 --- 
-title: "Lockdown to R-Full-stack"
+title: "Lockdown to R-Full-Stack"
 author: "Richard Nacianceno"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -10,11 +10,18 @@ link-citations: yes
 description: "This is my journey to R programming."
 ---
 
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-library(emo)
+# Overview {-}
+
+```{r envmain, echo=FALSE, eval=FALSE}
+knitr::opts_chunk$set(message = FALSE,
+                      warning = FALSE, 
+                      fig.width = 12, 
+                      fig.height = 8)
 ```
 
-# Overview {-}
+```{r echo=FALSE}
+library(emo)
+```
 
 My name is Richard. I'm a consultant that uses many forms of technology to analyze data such as SQL, Power BI, Tableau, Salesforce, Looker and R. I wanted to share my experience in in data analytics around R language environment.  This is a journey of sleepless nights during Covid-19 lockdown and how I was able to learn R programming through Coursera - JHU Data Science Specialization [@dss]. I enrolled for the course in March of 2020 and I will summarize a tidy format of my notes during these specialization. 
 

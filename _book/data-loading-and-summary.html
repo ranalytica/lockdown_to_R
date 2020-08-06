@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>11.2 Data Loading and Summary | Lockdown to R-Full-Stack</title>
+  <meta name="description" content="This is my journey to R programming." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="11.2 Data Loading and Summary | Lockdown to R-Full-Stack" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is my journey to R programming." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="11.2 Data Loading and Summary | Lockdown to R-Full-Stack" />
+  
+  <meta name="twitter:description" content="This is my journey to R programming." />
+  
+
+<meta name="author" content="Richard Nacianceno" />
+
+
+<meta name="date" content="2020-08-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="environment.html"/>
+<link rel="next" href="processing-data-for-tokenization.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lockdown to R-Full-Stack</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a><ul>
+<li class="chapter" data-level="" data-path="expect-to-have-lucid-dreams.html"><a href="expect-to-have-lucid-dreams.html"><i class="fa fa-check"></i>Expect To Have Lucid Dreams</a></li>
+<li class="chapter" data-level="" data-path="why-create-a-bookdown-of-experience.html"><a href="why-create-a-bookdown-of-experience.html"><i class="fa fa-check"></i>Why Create a bookdown of Experience?</a></li>
+<li class="chapter" data-level="" data-path="in-retrospect.html"><a href="in-retrospect.html"><i class="fa fa-check"></i>In Retrospect</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data-science-toolbox.html"><a href="data-science-toolbox.html"><i class="fa fa-check"></i><b>2</b> Data Science Toolbox</a><ul>
+<li class="chapter" data-level="2.1" data-path="so-much-more.html"><a href="so-much-more.html"><i class="fa fa-check"></i><b>2.1</b> So Much More</a></li>
+<li class="chapter" data-level="2.2" data-path="layout-of-the-course.html"><a href="layout-of-the-course.html"><i class="fa fa-check"></i><b>2.2</b> Layout of the Course</a></li>
+<li class="chapter" data-level="2.3" data-path="what-is-data-science.html"><a href="what-is-data-science.html"><i class="fa fa-check"></i><b>2.3</b> What is Data Science?</a></li>
+<li class="chapter" data-level="2.4" data-path="what-is-data.html"><a href="what-is-data.html"><i class="fa fa-check"></i><b>2.4</b> What is Data?</a></li>
+<li class="chapter" data-level="2.5" data-path="what-is-a-data-scientist.html"><a href="what-is-a-data-scientist.html"><i class="fa fa-check"></i><b>2.5</b> What is a data scientist?</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="getting-and-cleaning-data.html"><a href="getting-and-cleaning-data.html"><i class="fa fa-check"></i><b>3</b> Getting and Cleaning Data</a></li>
+<li class="chapter" data-level="4" data-path="r-programming.html"><a href="r-programming.html"><i class="fa fa-check"></i><b>4</b> R Programming</a></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a><ul>
+<li class="chapter" data-level="5.1" data-path="example-one.html"><a href="example-one.html"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
+<li class="chapter" data-level="5.2" data-path="example-two.html"><a href="example-two.html"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="7" data-path="reproducible-research.html"><a href="reproducible-research.html"><i class="fa fa-check"></i><b>7</b> Reproducible Research</a></li>
+<li class="chapter" data-level="8" data-path="regression-models.html"><a href="regression-models.html"><i class="fa fa-check"></i><b>8</b> Regression Models</a></li>
+<li class="chapter" data-level="9" data-path="practical-machine-learning.html"><a href="practical-machine-learning.html"><i class="fa fa-check"></i><b>9</b> Practical Machine Learning</a></li>
+<li class="chapter" data-level="10" data-path="developing-data-products.html"><a href="developing-data-products.html"><i class="fa fa-check"></i><b>10</b> Developing Data Products</a></li>
+<li class="chapter" data-level="11" data-path="data-science-capstone.html"><a href="data-science-capstone.html"><i class="fa fa-check"></i><b>11</b> Data Science Capstone</a><ul>
+<li class="chapter" data-level="11.1" data-path="environment.html"><a href="environment.html"><i class="fa fa-check"></i><b>11.1</b> Environment</a></li>
+<li class="chapter" data-level="11.2" data-path="data-loading-and-summary.html"><a href="data-loading-and-summary.html"><i class="fa fa-check"></i><b>11.2</b> Data Loading and Summary</a></li>
+<li class="chapter" data-level="11.3" data-path="processing-data-for-tokenization.html"><a href="processing-data-for-tokenization.html"><i class="fa fa-check"></i><b>11.3</b> Processing data for tokenization</a></li>
+<li class="chapter" data-level="11.4" data-path="transforming-text.html"><a href="transforming-text.html"><i class="fa fa-check"></i><b>11.4</b> Transforming Text</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lockdown to R-Full-Stack</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-loading-and-summary" class="section level2">
+<h2><span class="header-section-number">11.2</span> Data Loading and Summary</h2>
+<details>
+<p><summary><strong>View Code</strong></summary></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-loading-and-summary.html#cb2-1"></a><span class="co">## Download file (run at the beginning only) ---------</span></span>
+<span id="cb2-2"><a href="data-loading-and-summary.html#cb2-2"></a></span>
+<span id="cb2-3"><a href="data-loading-and-summary.html#cb2-3"></a><span class="co"># if (!file.exists(&#39;data&#39;)) { dir.create(&#39;data&#39;) }</span></span>
+<span id="cb2-4"><a href="data-loading-and-summary.html#cb2-4"></a><span class="co"># download.file(</span></span>
+<span id="cb2-5"><a href="data-loading-and-summary.html#cb2-5"></a><span class="co"># &#39;https://d396qusza40orc.cloudfront.net/ds</span></span>
+<span id="cb2-6"><a href="data-loading-and-summary.html#cb2-6"></a><span class="co"># scapstone/dataset/Coursera-SwiftKey.zip&#39;, destfile =</span></span>
+<span id="cb2-7"><a href="data-loading-and-summary.html#cb2-7"></a><span class="co"># &#39;./data/Coursera-SwiftKey.zip&#39; )</span></span>
+<span id="cb2-8"><a href="data-loading-and-summary.html#cb2-8"></a><span class="co"># unzip(&#39;./data/Coursera-SwiftKey.zip&#39;, exdir =</span></span>
+<span id="cb2-9"><a href="data-loading-and-summary.html#cb2-9"></a><span class="co"># &#39;./data&#39;)</span></span>
+<span id="cb2-10"><a href="data-loading-and-summary.html#cb2-10"></a></span>
+<span id="cb2-11"><a href="data-loading-and-summary.html#cb2-11"></a><span class="co">## Combining -----------</span></span>
+<span id="cb2-12"><a href="data-loading-and-summary.html#cb2-12"></a>files2 &lt;-<span class="st"> </span><span class="kw">list.dirs</span>(<span class="st">&quot;./data/final&quot;</span>)</span>
+<span id="cb2-13"><a href="data-loading-and-summary.html#cb2-13"></a>lsfile &lt;-<span class="st"> </span><span class="kw">paste0</span>(files2[<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>], <span class="st">&quot;/&quot;</span>, <span class="kw">list.files</span>(files2[<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>]))</span>
+<span id="cb2-14"><a href="data-loading-and-summary.html#cb2-14"></a></span>
+<span id="cb2-15"><a href="data-loading-and-summary.html#cb2-15"></a><span class="co"># gives us the directory path</span></span>
+<span id="cb2-16"><a href="data-loading-and-summary.html#cb2-16"></a>ldir &lt;-<span class="st"> </span><span class="kw">normalizePath</span>(files2[<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>], <span class="st">&quot;rb&quot;</span>)</span>
+<span id="cb2-17"><a href="data-loading-and-summary.html#cb2-17"></a></span>
+<span id="cb2-18"><a href="data-loading-and-summary.html#cb2-18"></a><span class="co"># gives us full path and filename</span></span>
+<span id="cb2-19"><a href="data-loading-and-summary.html#cb2-19"></a>finaldir &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="dt">path =</span> ldir, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb2-20"><a href="data-loading-and-summary.html#cb2-20"></a></span>
+<span id="cb2-21"><a href="data-loading-and-summary.html#cb2-21"></a><span class="co">## Build a table --------------</span></span>
+<span id="cb2-22"><a href="data-loading-and-summary.html#cb2-22"></a></span>
+<span id="cb2-23"><a href="data-loading-and-summary.html#cb2-23"></a><span class="co">## Num_Words total number of words in a txt file</span></span>
+<span id="cb2-24"><a href="data-loading-and-summary.html#cb2-24"></a>Num_Words &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="st">&quot;numeric&quot;</span>)</span>
+<span id="cb2-25"><a href="data-loading-and-summary.html#cb2-25"></a></span>
+<span id="cb2-26"><a href="data-loading-and-summary.html#cb2-26"></a><span class="co">## Num_Lines number of lines per txt file</span></span>
+<span id="cb2-27"><a href="data-loading-and-summary.html#cb2-27"></a>Num_Lines &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="st">&quot;numeric&quot;</span>)</span>
+<span id="cb2-28"><a href="data-loading-and-summary.html#cb2-28"></a></span>
+<span id="cb2-29"><a href="data-loading-and-summary.html#cb2-29"></a><span class="co">## Range of words per line</span></span>
+<span id="cb2-30"><a href="data-loading-and-summary.html#cb2-30"></a>Min_Words &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="st">&quot;numeric&quot;</span>)</span>
+<span id="cb2-31"><a href="data-loading-and-summary.html#cb2-31"></a>Mean_Words &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="st">&quot;numeric&quot;</span>)</span>
+<span id="cb2-32"><a href="data-loading-and-summary.html#cb2-32"></a>Max_Words &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="st">&quot;numeric&quot;</span>)</span>
+<span id="cb2-33"><a href="data-loading-and-summary.html#cb2-33"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">12</span>) {</span>
+<span id="cb2-34"><a href="data-loading-and-summary.html#cb2-34"></a>    Num_Words[i] &lt;-<span class="st"> </span><span class="kw">print</span>(<span class="kw">sum</span>(<span class="kw">stri_count_words</span>(<span class="kw">readLines</span>(finaldir[[i]]))))</span>
+<span id="cb2-35"><a href="data-loading-and-summary.html#cb2-35"></a>    Mean_Words[i] &lt;-<span class="st"> </span><span class="kw">print</span>(<span class="kw">round</span>(<span class="kw">mean</span>(<span class="kw">stri_count_words</span>(<span class="kw">readLines</span>(finaldir[[i]])))), </span>
+<span id="cb2-36"><a href="data-loading-and-summary.html#cb2-36"></a>        <span class="dt">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb2-37"><a href="data-loading-and-summary.html#cb2-37"></a>    Min_Words[i] &lt;-<span class="st"> </span><span class="kw">print</span>(<span class="kw">round</span>(<span class="kw">min</span>(<span class="kw">stri_count_words</span>(<span class="kw">readLines</span>(finaldir[[i]])))), </span>
+<span id="cb2-38"><a href="data-loading-and-summary.html#cb2-38"></a>        <span class="dt">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb2-39"><a href="data-loading-and-summary.html#cb2-39"></a>    Max_Words[i] &lt;-<span class="st"> </span><span class="kw">print</span>(<span class="kw">round</span>(<span class="kw">max</span>(<span class="kw">stri_count_words</span>(<span class="kw">readLines</span>(finaldir[[i]])))), </span>
+<span id="cb2-40"><a href="data-loading-and-summary.html#cb2-40"></a>        <span class="dt">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb2-41"><a href="data-loading-and-summary.html#cb2-41"></a>    Num_Lines[i] &lt;-<span class="st"> </span><span class="kw">print</span>(<span class="kw">length</span>(<span class="kw">readLines</span>(finaldir[i])))</span>
+<span id="cb2-42"><a href="data-loading-and-summary.html#cb2-42"></a>}</span></code></pre></div>
+<pre><code>[1] 12682659
+[1] 34
+[1] 0
+[1] 1638
+[1] 371440
+[1] 13375092
+[1] 55
+[1] 1
+[1] 603
+[1] 244743
+[1] 11646033
+[1] 12
+[1] 0
+[1] 42
+[1] 947774
+[1] 37546250
+[1] 42
+[1] 0
+[1] 6726
+[1] 899288
+[1] 34762395
+[1] 34
+[1] 1
+[1] 1796
+[1] 1010242
+[1] 30093372
+[1] 13
+[1] 1
+[1] 47
+[1] 2360148
+[1] 12785318
+[1] 29
+[1] 0
+[1] 2353
+[1] 439785
+[1] 10532432
+[1] 22
+[1] 1
+[1] 478
+[1] 485758
+[1] 3147083
+[1] 11
+[1] 1
+[1] 44
+[1] 285214
+[1] 9388482
+[1] 28
+[1] 1
+[1] 1197
+[1] 337100
+[1] 9057248
+[1] 46
+[1] 1
+[1] 1581
+[1] 196360
+[1] 9231328
+[1] 10
+[1] 1
+[1] 36
+[1] 881414</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-loading-and-summary.html#cb4-1"></a><span class="co"># Combine -------------</span></span>
+<span id="cb4-2"><a href="data-loading-and-summary.html#cb4-2"></a>list_files &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">Name =</span> <span class="kw">list.files</span>(files2[<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>]), <span class="dt">Size_MB =</span> <span class="kw">round</span>(<span class="kw">file.size</span>(finaldir)<span class="op">/</span><span class="dv">10</span><span class="op">^</span><span class="dv">6</span>, </span>
+<span id="cb4-3"><a href="data-loading-and-summary.html#cb4-3"></a>    <span class="dt">digits =</span> <span class="dv">2</span>), <span class="dt">Lines =</span> Num_Lines, <span class="dt">Words =</span> Num_Words, <span class="dt">Min =</span> Min_Words, </span>
+<span id="cb4-4"><a href="data-loading-and-summary.html#cb4-4"></a>    <span class="dt">Average =</span> Mean_Words, <span class="dt">Max =</span> Max_Words)</span>
+<span id="cb4-5"><a href="data-loading-and-summary.html#cb4-5"></a></span>
+<span id="cb4-6"><a href="data-loading-and-summary.html#cb4-6"></a><span class="co"># knit to table -----------</span></span>
+<span id="cb4-7"><a href="data-loading-and-summary.html#cb4-7"></a>table1 &lt;-<span class="st"> </span><span class="kw">kable</span>(list_files, <span class="dt">align =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;c&quot;</span>, <span class="dt">times =</span> <span class="dv">5</span>)))</span></code></pre></div>
+</details>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-loading-and-summary.html#cb5-1"></a>table1</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:center;">
+Name
+</th>
+<th style="text-align:center;">
+Size_MB
+</th>
+<th style="text-align:center;">
+Lines
+</th>
+<th style="text-align:center;">
+Words
+</th>
+<th style="text-align:center;">
+Min
+</th>
+<th style="text-align:center;">
+Average
+</th>
+<th style="text-align:center;">
+Max
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+de_DE.blogs.txt
+</td>
+<td style="text-align:center;">
+85.46
+</td>
+<td style="text-align:center;">
+371440
+</td>
+<td style="text-align:center;">
+12682659
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+34
+</td>
+<td style="text-align:center;">
+1638
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+de_DE.news.txt
+</td>
+<td style="text-align:center;">
+95.59
+</td>
+<td style="text-align:center;">
+244743
+</td>
+<td style="text-align:center;">
+13375092
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+55
+</td>
+<td style="text-align:center;">
+603
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+de_DE.twitter.txt
+</td>
+<td style="text-align:center;">
+75.58
+</td>
+<td style="text-align:center;">
+947774
+</td>
+<td style="text-align:center;">
+11646033
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:center;">
+42
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+en_US.blogs.txt
+</td>
+<td style="text-align:center;">
+210.16
+</td>
+<td style="text-align:center;">
+899288
+</td>
+<td style="text-align:center;">
+37546250
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+42
+</td>
+<td style="text-align:center;">
+6726
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+en_US.news.txt
+</td>
+<td style="text-align:center;">
+205.81
+</td>
+<td style="text-align:center;">
+1010242
+</td>
+<td style="text-align:center;">
+34762395
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+34
+</td>
+<td style="text-align:center;">
+1796
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+en_US.twitter.txt
+</td>
+<td style="text-align:center;">
+167.11
+</td>
+<td style="text-align:center;">
+2360148
+</td>
+<td style="text-align:center;">
+30093372
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:center;">
+47
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+fi_FI.blogs.txt
+</td>
+<td style="text-align:center;">
+108.50
+</td>
+<td style="text-align:center;">
+439785
+</td>
+<td style="text-align:center;">
+12785318
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+29
+</td>
+<td style="text-align:center;">
+2353
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+fi_FI.news.txt
+</td>
+<td style="text-align:center;">
+94.23
+</td>
+<td style="text-align:center;">
+485758
+</td>
+<td style="text-align:center;">
+10532432
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+22
+</td>
+<td style="text-align:center;">
+478
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+fi_FI.twitter.txt
+</td>
+<td style="text-align:center;">
+25.33
+</td>
+<td style="text-align:center;">
+285214
+</td>
+<td style="text-align:center;">
+3147083
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+44
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+ru_RU.blogs.txt
+</td>
+<td style="text-align:center;">
+116.86
+</td>
+<td style="text-align:center;">
+337100
+</td>
+<td style="text-align:center;">
+9388482
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:center;">
+1197
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+ru_RU.news.txt
+</td>
+<td style="text-align:center;">
+119.00
+</td>
+<td style="text-align:center;">
+196360
+</td>
+<td style="text-align:center;">
+9057248
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+46
+</td>
+<td style="text-align:center;">
+1581
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+ru_RU.twitter.txt
+</td>
+<td style="text-align:center;">
+105.18
+</td>
+<td style="text-align:center;">
+881414
+</td>
+<td style="text-align:center;">
+9231328
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+36
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="environment.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="processing-data-for-tokenization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["r_full_stack.pdf", "r_full_stack.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

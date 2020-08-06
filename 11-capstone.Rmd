@@ -1,0 +1,161 @@
+# Data Science Capstone
+
+## Environment
+
+```{r setup, echo=TRUE, cache=FALSE}
+enviro <- 
+  c("rmdformats","knitr","rvest", "tidytext", "tm", "tidyverse", "NLP", "knitr", "readr", "openNLP", "glue", "RWeka", "stringi", "SnowballC", "wordcloud2")
+
+for (i in 1:length(enviro)){
+library(enviro[i], character.only = TRUE)
+}
+
+## Global options
+options(max.print="75")
+opts_chunk$set(cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+
+## Data Loading and Summary
+<details><summary>**View Code**</summary>
+```{r download, cache=TRUE}
+## Download file (run at the beginning only) ---------
+
+# if (!file.exists("data")) {
+#  dir.create("data")
+#}
+#download.file(
+#  "https://d396qusza40orc.cloudfront.net/ds scapstone/dataset/Coursera-SwiftKey.zip",
+#  destfile = "./data/Coursera-SwiftKey.zip"
+#)
+#unzip("./data/Coursera-SwiftKey.zip", exdir = "./data")
+
+## Combining -----------
+files2 <- list.dirs("./data/final")
+lsfile <-  paste0(files2[2:5],"/",
+                  list.files(files2[2:5]))
+
+# gives us the directory path
+ldir <- normalizePath(files2[2:5], "rb") 
+
+# gives us full path and filename
+finaldir <- dir(path=ldir, full.names=TRUE) 
+
+## Build a table --------------
+
+## Num_Words total number of words in a txt file
+Num_Words <- vector("numeric")
+
+## Num_Lines number of lines per txt file
+Num_Lines <- vector("numeric")
+
+## Range of words per line
+Min_Words <- vector("numeric")
+Mean_Words <- vector("numeric")
+Max_Words <- vector("numeric")
+for (i in 1:12) {
+      Num_Words[i] <-
+        print(sum(stri_count_words(readLines(finaldir[[i]]))))
+      Mean_Words[i] <-
+        print(round(mean(stri_count_words(
+          readLines(finaldir[[i]])
+        ))), digits = 2)
+      Min_Words[i] <-
+        print(round(min(stri_count_words(
+          readLines(finaldir[[i]])
+        ))), digits = 2)
+      Max_Words[i] <-
+        print(round(max(stri_count_words(
+          readLines(finaldir[[i]])
+        ))), digits = 2)
+      Num_Lines[i] <- print(length(readLines(finaldir[i])))
+}
+
+# Combine -------------
+list_files <- tibble(
+        'Name' = list.files(files2[2:5]),
+        'Size_MB' = round(file.size(finaldir) / 10 ^ 6, digits =
+                            2),
+        Lines = Num_Lines,
+        Words = Num_Words,
+        Min = Min_Words,
+        Average = Mean_Words,
+        Max = Max_Words
+)
+
+# knit to table -----------
+table1 <- kable(list_files, align = c(rep('c', times = 5)))
+```
+</details>
+```{r fig.cap='file'}
+table1 
+```
+
+## Processing data for tokenization
+
+```{r SourceData, cache=TRUE}
+set.seed(420)
+source_data <- DirSource(ldir)
+
+corpus_data <- VCorpus(source_data)
+```
+
+
+```{r summaryCorpus}
+summary(corpus_data)
+```
+
+
+```{r inspectCorpus}
+inspect(corpus_data[5])
+```
+
+
+```{r metaCorpus}
+meta(corpus_data[[5]], "id")
+```
+
+## Transforming Text
+
+1. Tokenization - identifying appropriate tokens such as words, punctuation, and numbers. Writing a function that takes a file as input and returns a tokenized version of it.
+
+2. Profanity filtering ------------------
+
+```{r transformation}
+removeSpecialChars <- function(x)
+      gsub("[^a-zA-Z0-9 ]", "", x)
+
+getTransformations()
+
+us_news <- tm_map(corpus_data[5], removePunctuation)
+
+us_news <- tm_map(us_news, removeNumbers)
+us_news <- tm_map(us_news, content_transformer(tolower))
+us_news <- tm_map(us_news, removeWords, stopwords(kind = "en"))
+us_news <- tm_map(us_news, stripWhitespace)
+us_news <- tm_map(us_news, stemDocument)
+us_news <- tm_map(us_news, content_transformer(removeSpecialChars))
+us_news_trix <- DocumentTermMatrix(us_news)
+
+```
+
+
+```{r frequency}
+inspect(us_news_trix)
+findFreqTerms(us_news_trix, 25)
+findAssocs(us_news_trix, "feet", .1)
+inspect(removeSparseTerms(us_news_trix, .4))
+Terms(us_news_trix)
+freqq <- colSums(as.matrix(us_news_trix))
+```
+
+
+```{r SentimentScore}
+
+```

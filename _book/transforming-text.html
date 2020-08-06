@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>11.4 Transforming Text | Lockdown to R-Full-Stack</title>
+  <meta name="description" content="This is my journey to R programming." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="11.4 Transforming Text | Lockdown to R-Full-Stack" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is my journey to R programming." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="11.4 Transforming Text | Lockdown to R-Full-Stack" />
+  
+  <meta name="twitter:description" content="This is my journey to R programming." />
+  
+
+<meta name="author" content="Richard Nacianceno" />
+
+
+<meta name="date" content="2020-08-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="processing-data-for-tokenization.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Lockdown to R-Full-Stack</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a><ul>
+<li class="chapter" data-level="" data-path="expect-to-have-lucid-dreams.html"><a href="expect-to-have-lucid-dreams.html"><i class="fa fa-check"></i>Expect To Have Lucid Dreams</a></li>
+<li class="chapter" data-level="" data-path="why-create-a-bookdown-of-experience.html"><a href="why-create-a-bookdown-of-experience.html"><i class="fa fa-check"></i>Why Create a bookdown of Experience?</a></li>
+<li class="chapter" data-level="" data-path="in-retrospect.html"><a href="in-retrospect.html"><i class="fa fa-check"></i>In Retrospect</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data-science-toolbox.html"><a href="data-science-toolbox.html"><i class="fa fa-check"></i><b>2</b> Data Science Toolbox</a><ul>
+<li class="chapter" data-level="2.1" data-path="so-much-more.html"><a href="so-much-more.html"><i class="fa fa-check"></i><b>2.1</b> So Much More</a></li>
+<li class="chapter" data-level="2.2" data-path="layout-of-the-course.html"><a href="layout-of-the-course.html"><i class="fa fa-check"></i><b>2.2</b> Layout of the Course</a></li>
+<li class="chapter" data-level="2.3" data-path="what-is-data-science.html"><a href="what-is-data-science.html"><i class="fa fa-check"></i><b>2.3</b> What is Data Science?</a></li>
+<li class="chapter" data-level="2.4" data-path="what-is-data.html"><a href="what-is-data.html"><i class="fa fa-check"></i><b>2.4</b> What is Data?</a></li>
+<li class="chapter" data-level="2.5" data-path="what-is-a-data-scientist.html"><a href="what-is-a-data-scientist.html"><i class="fa fa-check"></i><b>2.5</b> What is a data scientist?</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="getting-and-cleaning-data.html"><a href="getting-and-cleaning-data.html"><i class="fa fa-check"></i><b>3</b> Getting and Cleaning Data</a></li>
+<li class="chapter" data-level="4" data-path="r-programming.html"><a href="r-programming.html"><i class="fa fa-check"></i><b>4</b> R Programming</a></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a><ul>
+<li class="chapter" data-level="5.1" data-path="example-one.html"><a href="example-one.html"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
+<li class="chapter" data-level="5.2" data-path="example-two.html"><a href="example-two.html"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="7" data-path="reproducible-research.html"><a href="reproducible-research.html"><i class="fa fa-check"></i><b>7</b> Reproducible Research</a></li>
+<li class="chapter" data-level="8" data-path="regression-models.html"><a href="regression-models.html"><i class="fa fa-check"></i><b>8</b> Regression Models</a></li>
+<li class="chapter" data-level="9" data-path="practical-machine-learning.html"><a href="practical-machine-learning.html"><i class="fa fa-check"></i><b>9</b> Practical Machine Learning</a></li>
+<li class="chapter" data-level="10" data-path="developing-data-products.html"><a href="developing-data-products.html"><i class="fa fa-check"></i><b>10</b> Developing Data Products</a></li>
+<li class="chapter" data-level="11" data-path="data-science-capstone.html"><a href="data-science-capstone.html"><i class="fa fa-check"></i><b>11</b> Data Science Capstone</a><ul>
+<li class="chapter" data-level="11.1" data-path="environment.html"><a href="environment.html"><i class="fa fa-check"></i><b>11.1</b> Environment</a></li>
+<li class="chapter" data-level="11.2" data-path="data-loading-and-summary.html"><a href="data-loading-and-summary.html"><i class="fa fa-check"></i><b>11.2</b> Data Loading and Summary</a></li>
+<li class="chapter" data-level="11.3" data-path="processing-data-for-tokenization.html"><a href="processing-data-for-tokenization.html"><i class="fa fa-check"></i><b>11.3</b> Processing data for tokenization</a></li>
+<li class="chapter" data-level="11.4" data-path="transforming-text.html"><a href="transforming-text.html"><i class="fa fa-check"></i><b>11.4</b> Transforming Text</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Lockdown to R-Full-Stack</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="transforming-text" class="section level2">
+<h2><span class="header-section-number">11.4</span> Transforming Text</h2>
+<ol style="list-style-type: decimal">
+<li><p>Tokenization - identifying appropriate tokens such as words, punctuation, and numbers. Writing a function that takes a file as input and returns a tokenized version of it.</p></li>
+<li><p>Profanity filtering ——————</p></li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="transforming-text.html#cb13-1"></a>removeSpecialChars &lt;-<span class="st"> </span><span class="cf">function</span>(x) <span class="kw">gsub</span>(<span class="st">&quot;[^a-zA-Z0-9 ]&quot;</span>, <span class="st">&quot;&quot;</span>, </span>
+<span id="cb13-2"><a href="transforming-text.html#cb13-2"></a>    x)</span>
+<span id="cb13-3"><a href="transforming-text.html#cb13-3"></a></span>
+<span id="cb13-4"><a href="transforming-text.html#cb13-4"></a><span class="kw">getTransformations</span>()</span></code></pre></div>
+<pre><code>[1] &quot;removeNumbers&quot;     &quot;removePunctuation&quot;
+[3] &quot;removeWords&quot;       &quot;stemDocument&quot;     
+[5] &quot;stripWhitespace&quot;  </code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="transforming-text.html#cb15-1"></a>us_news &lt;-<span class="st"> </span><span class="kw">tm_map</span>(corpus_data[<span class="dv">5</span>], removePunctuation)</span>
+<span id="cb15-2"><a href="transforming-text.html#cb15-2"></a></span>
+<span id="cb15-3"><a href="transforming-text.html#cb15-3"></a>us_news &lt;-<span class="st"> </span><span class="kw">tm_map</span>(us_news, removeNumbers)</span>
+<span id="cb15-4"><a href="transforming-text.html#cb15-4"></a>us_news &lt;-<span class="st"> </span><span class="kw">tm_map</span>(us_news, <span class="kw">content_transformer</span>(tolower))</span>
+<span id="cb15-5"><a href="transforming-text.html#cb15-5"></a>us_news &lt;-<span class="st"> </span><span class="kw">tm_map</span>(us_news, removeWords, <span class="kw">stopwords</span>(<span class="dt">kind =</span> <span class="st">&quot;en&quot;</span>))</span>
+<span id="cb15-6"><a href="transforming-text.html#cb15-6"></a>us_news &lt;-<span class="st"> </span><span class="kw">tm_map</span>(us_news, stripWhitespace)</span>
+<span id="cb15-7"><a href="transforming-text.html#cb15-7"></a>us_news &lt;-<span class="st"> </span><span class="kw">tm_map</span>(us_news, stemDocument)</span>
+<span id="cb15-8"><a href="transforming-text.html#cb15-8"></a>us_news &lt;-<span class="st"> </span><span class="kw">tm_map</span>(us_news, <span class="kw">content_transformer</span>(removeSpecialChars))</span>
+<span id="cb15-9"><a href="transforming-text.html#cb15-9"></a>us_news_trix &lt;-<span class="st"> </span><span class="kw">DocumentTermMatrix</span>(us_news)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="transforming-text.html#cb16-1"></a><span class="kw">inspect</span>(us_news_trix)</span></code></pre></div>
+<pre><code>&lt;&lt;DocumentTermMatrix (documents: 1, terms: 249338)&gt;&gt;
+Non-/sparse entries: 249338/0
+Sparsity           : 0%
+Maximal term length: 93
+Weighting          : term frequency (tf)
+Sample             :
+                Terms
+Docs               get  like   new   one   said   say
+  en_US.news.txt 60015 60466 70325 86725 250358 63085
+                Terms
+Docs             state  time   will   year
+  en_US.news.txt 66073 65995 110914 109283</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="transforming-text.html#cb18-1"></a><span class="kw">findFreqTerms</span>(us_news_trix, <span class="dv">25</span>)</span></code></pre></div>
+<pre><code> [1] &quot;aaa&quot;           &quot;aah&quot;           &quot;aardman&quot;      
+ [4] &quot;aaron&quot;         &quot;aarp&quot;          &quot;aau&quot;          
+ [7] &quot;aba&quot;           &quot;aback&quot;         &quot;abalon&quot;       
+[10] &quot;abandon&quot;       &quot;abat&quot;          &quot;abba&quot;         
+[13] &quot;abbey&quot;         &quot;abbi&quot;          &quot;abbott&quot;       
+[16] &quot;abbottabad&quot;    &quot;abbrevi&quot;       &quot;abc&quot;          
+[19] &quot;abdelkad&quot;      &quot;abdic&quot;         &quot;abdomen&quot;      
+[22] &quot;abdomin&quot;       &quot;abduct&quot;        &quot;abdul&quot;        
+[25] &quot;abduljabbar&quot;   &quot;abdullah&quot;      &quot;abdulmutallab&quot;
+[28] &quot;abdurraheem&quot;   &quot;abe&quot;           &quot;abel&quot;         
+[31] &quot;abercrombi&quot;    &quot;aberdeen&quot;      &quot;aberr&quot;        
+[34] &quot;abet&quot;          &quot;abid&quot;          &quot;abigail&quot;      
+[37] &quot;abil&quot;          &quot;abingdon&quot;      &quot;abject&quot;       
+[40] &quot;abl&quot;           &quot;ablaz&quot;         &quot;ablebodi&quot;     
+[43] &quot;abli&quot;          &quot;ablin&quot;         &quot;abnorm&quot;       
+[46] &quot;aboard&quot;        &quot;abod&quot;          &quot;abolish&quot;      
+[49] &quot;abomin&quot;        &quot;abort&quot;         &quot;abound&quot;       
+[52] &quot;aboutfac&quot;      &quot;aboveaverag&quot;   &quot;aboveground&quot;  
+[55] &quot;abraham&quot;       &quot;abram&quot;         &quot;abras&quot;        
+[58] &quot;abreast&quot;       &quot;abreeya&quot;       &quot;abreu&quot;        
+[61] &quot;abroad&quot;        &quot;abrupt&quot;        &quot;absenc&quot;       
+[64] &quot;absent&quot;        &quot;absente&quot;       &quot;absinth&quot;      
+[67] &quot;absolut&quot;       &quot;absolv&quot;        &quot;absorb&quot;       
+[70] &quot;absorpt&quot;       &quot;abstain&quot;       &quot;abstent&quot;      
+[73] &quot;abstin&quot;        &quot;abstract&quot;      &quot;absurd&quot;       
+ [ reached getOption(&quot;max.print&quot;) -- omitted 25519 entries ]</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="transforming-text.html#cb20-1"></a><span class="kw">findAssocs</span>(us_news_trix, <span class="st">&quot;feet&quot;</span>, <span class="fl">0.1</span>)</span></code></pre></div>
+<pre><code>$feet
+numeric(0)</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="transforming-text.html#cb22-1"></a><span class="kw">inspect</span>(<span class="kw">removeSparseTerms</span>(us_news_trix, <span class="fl">0.4</span>))</span></code></pre></div>
+<pre><code>&lt;&lt;DocumentTermMatrix (documents: 1, terms: 249338)&gt;&gt;
+Non-/sparse entries: 249338/0
+Sparsity           : 0%
+Maximal term length: 93
+Weighting          : term frequency (tf)
+Sample             :
+                Terms
+Docs               get  like   new   one   said   say
+  en_US.news.txt 60015 60466 70325 86725 250358 63085
+                Terms
+Docs             state  time   will   year
+  en_US.news.txt 66073 65995 110914 109283</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="transforming-text.html#cb24-1"></a><span class="kw">Terms</span>(us_news_trix)</span></code></pre></div>
+<pre><code> [1] &quot;aaa&quot;                      
+ [2] &quot;aaaa&quot;                     
+ [3] &quot;aaaaa&quot;                    
+ [4] &quot;aaaaaahh&quot;                 
+ [5] &quot;aaaaaahhh&quot;                
+ [6] &quot;aaaaaahhhh&quot;               
+ [7] &quot;aaaaaand&quot;                 
+ [8] &quot;aaaaahhhh&quot;                
+ [9] &quot;aaaaambival&quot;              
+[10] &quot;aaaaarp&quot;                  
+[11] &quot;aaaah&quot;                    
+[12] &quot;aaaand&quot;                   
+[13] &quot;aaaextinguisher&quot;          
+[14] &quot;aaagh&quot;                    
+[15] &quot;aaahhh&quot;                   
+[16] &quot;aaai&quot;                     
+[17] &quot;aaar&quot;                     
+[18] &quot;aaarat&quot;                   
+[19] &quot;aaarrgh&quot;                  
+[20] &quot;aaarrrgghhh&quot;              
+[21] &quot;aab&quot;                      
+[22] &quot;aaba&quot;                     
+[23] &quot;aabor&quot;                    
+[24] &quot;aac&quot;                      
+[25] &quot;aacc&quot;                     
+[26] &quot;aaccedu&quot;                  
+[27] &quot;aacceduscienceobservatori&quot;
+[28] &quot;aaccord&quot;                  
+[29] &quot;aachen&quot;                   
+[30] &quot;aacom&quot;                    
+[31] &quot;aacountyorgag&quot;            
+[32] &quot;aacr&quot;                     
+[33] &quot;aacu&quot;                     
+[34] &quot;aada&quot;                     
+[35] &quot;aaden&quot;                    
+[36] &quot;aadil&quot;                    
+[37] &quot;aadland&quot;                  
+[38] &quot;aadrman&quot;                  
+[39] &quot;aadvantag&quot;                
+[40] &quot;aaf&quot;                      
+[41] &quot;aafedt&quot;                   
+[42] &quot;aafreen&quot;                  
+[43] &quot;aafter&quot;                   
+[44] &quot;aagaard&quot;                  
+[45] &quot;aah&quot;                      
+[46] &quot;aahh&quot;                     
+[47] &quot;aaholm&quot;                   
+[48] &quot;aahsorg&quot;                  
+[49] &quot;aahz&quot;                     
+[50] &quot;aai&quot;                      
+[51] &quot;aaii&quot;                     
+[52] &quot;aaiineogooglegroupscom&quot;   
+[53] &quot;aaim&quot;                     
+[54] &quot;aak&quot;                      
+[55] &quot;aakash&quot;                   
+[56] &quot;aaker&quot;                    
+[57] &quot;aakhu&quot;                    
+[58] &quot;aal&quot;                      
+[59] &quot;aalam&quot;                    
+[60] &quot;aalber&quot;                   
+[61] &quot;aalborg&quot;                  
+[62] &quot;aalbu&quot;                    
+[63] &quot;aalder&quot;                   
+[64] &quot;aalesund&quot;                 
+[65] &quot;aali&quot;                     
+[66] &quot;aaliyah&quot;                  
+[67] &quot;aalok&quot;                    
+[68] &quot;aaltj&quot;                    
+[69] &quot;aalto&quot;                    
+[70] &quot;aam&quot;                      
+[71] &quot;aamc&quot;                     
+[72] &quot;aamco&quot;                    
+[73] &quot;aaminus&quot;                  
+[74] &quot;aampro&quot;                   
+[75] &quot;aan&quot;                      
+ [ reached getOption(&quot;max.print&quot;) -- omitted 249263 entries ]</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="transforming-text.html#cb26-1"></a>freqq &lt;-<span class="st"> </span><span class="kw">colSums</span>(<span class="kw">as.matrix</span>(us_news_trix))</span></code></pre></div>
+
+</div>
+<!-- </div> -->
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="processing-data-for-tokenization.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["r_full_stack.pdf", "r_full_stack.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
