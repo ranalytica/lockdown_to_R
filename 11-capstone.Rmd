@@ -1,5 +1,7 @@
 # Data Science Capstone
 
+Now that we are here. We have gained so many skill sets. This course is a culmination of all the knowledge learned during the specialization. I utilize my time efficiently during Covid19-lockdown. Learned valuable skills from installing R and RStudio, loading, subsetting, wrangling, exploring, using statistical inference, and applying machine learning to our data sets. I now have the ability to create data products geared to a specific customers. 
+
 ## Environment
 
 ```{r setup, echo=TRUE, cache=FALSE}
@@ -10,21 +12,13 @@ for (i in 1:length(enviro)){
 library(enviro[i], character.only = TRUE)
 }
 
-## Global options
-options(max.print="75")
-opts_chunk$set(cache=TRUE,
-               prompt=FALSE,
-               tidy=TRUE,
-               comment=NA,
-               message=FALSE,
-               warning=FALSE)
-opts_knit$set(width=75)
+
 ```
 
 
 ## Data Loading and Summary
-<details><summary>**View Code**</summary>
-```{r download, cache=TRUE}
+
+```{r download, cache=TRUE, results='hide'}
 ## Download file (run at the beginning only) ---------
 
 # if (!file.exists("data")) {
@@ -92,7 +86,7 @@ list_files <- tibble(
 # knit to table -----------
 table1 <- kable(list_files, align = c(rep('c', times = 5)))
 ```
-</details>
+
 ```{r fig.cap='file'}
 table1 
 ```

@@ -1,15 +1,15 @@
 # Data Science Toolbox
 
-The Data Science Toolbox provides a basic foundation in creating a work environment as a data scientist. This environment is based on the R language. It is an environment for statistical computing and graphics and so much more. It is similar to the S language developed at Bell Laboratories by John Chambers and his team [@wiki]. R language is created by Ross Ihaka and Robert Gentleman at the University of Auckland, New Zealand and is developed by the R Development Core Team. Thus, R is named after the first initials of the co-creators Ross & Robert [@wikipedia]. 
+The Data Science Toolbox provides a basic foundation in creating a work environment as a data scientist. This environment is based on the R language. It is an environment for statistical computing, graphics and so much more. It is similar to the S language developed at Bell Laboratories by John Chambers and his team [@wiki]. R language is created by Ross Ihaka and Robert Gentleman at the University of Auckland, New Zealand and is developed by the R Development Core Team. Thus, R is named after the first initials of the co-creators Ross & Robert [@wikipedia]. 
 
-## So Much More
+## More Than a Statistical Language
 
 R language is use in many industries such as research in academia, pharmaceutical for clinical trials, finance for risk management, social media for natural language processing and sentiment analysis, manufacturing for predicting demand and market trends and many more.
 
 Below is an example of a reproducible expression in building a simple metric stock analysis in R combined with shiny. We will look into NIO and SPY with a starting date of Jun 01, 2020. 
 
-<details><summary>**View Code**</summary>
-```{r env}
+
+```{r 02-env}
 # We will use all libraries through out this chapter
 library(shiny)
 library(plotly)
@@ -17,6 +17,7 @@ library(tidyquant)
 library(ggplot2)
 library(dplyr)
 library(dygraphs)
+library(echarts4r)
 library(timetk)
 library(glue)
 library(tidyr)
@@ -26,58 +27,44 @@ ticker <- c("NIO", "SPY")
 # tidyquant package for tidy format
 StockData <- tq_get(ticker, from = "2020-06-01")
 # table format
-table3.1 <- StockData[1:6,] %>% kable(caption = 'NIO vs. SPY') %>% kable_styling()
-```
-</details>
-```{r}
-table3.1
+StockData[1:6,] %>% kable(caption = 'NIO vs. SPY') %>% kable_styling()
 ```
 
 See below for time series chart of NIO's daily closing price. 
 
-<details><summary>**View Code**</summary>
-```{r TS, message=FALSE, warning=FALSE}
-g2<-StockData %>% filter(symbol == "NIO") %>% select(symbol, date, close) %>% 
-  spread(key = symbol, value = close) %>% tk_xts() %>% 
-  dygraph(height = 250,main = "NIO Price History", ylab = "Price") %>% dyRangeSelector()
 
+```{r 02-TS, fig.cap='NIO Price'}
+StockData %>% group_by(symbol)   %>% e_charts(date) %>% e_line(close)
 
+# StockData %>% filter(symbol == "NIO") %>% select(symbol, date, close) %>% 
+#  spread(key = symbol, value = close) %>% tk_xts() %>% 
+#  dygraph(height = 250,main = "NIO Price History", ylab = "Price") %>% dyRangeSelector()
 ```
-</details>
-
-```{r message=FALSE, warning=FALSE, fig.cap='NIO Price'}
-g2
-```
-
 
 Compare NIO to an Index.
 
-<details><summary>**View Code**</summary>
-```{r compare, message=FALSE, warning=FALSE}
-g3 <- StockData %>% select(symbol, date, close) %>% 
+```{r 02-compare, fig.cap='NIO vs. SPY'}
+StockData %>% select(symbol, date, close) %>% 
   spread(key=symbol, value = close) %>% 
   tk_xts() %>% 
   dygraph(height = 250,main = "NIO vs. SPY") %>% 
   dyRebase(value = 1) %>% 
   dyRangeSelector()
 ```
-</details>
-```{r vs, fig.cap='NIO vs. SPY', message=FALSE, warning=FALSE}
-g3
-```
 
 Stock Price distribution 
-<details><summary>**View Code**</summary>
-```{r distribution, message=FALSE, warning=FALSE}
+
+```{r 02-distribution, fig.cap='plotly and ggplot2 package'}
+# if needed binning function Freedman Diconis Rule [@fd]
 fd=function(x) {
   n=length(x)
   r=IQR(x)
   2*r/n^(1/3)
 }
+
 Stock_Dist <- StockData %>% 
     filter(symbol=="NIO")
   
-
 p2 <- ggplot(Stock_Dist, 
     aes(x=close)) +
   geom_histogram(aes(y=..density..),
@@ -88,52 +75,57 @@ p2 <- ggplot(Stock_Dist,
   labs(x="NIO", 
      y="Frequency",
      title = "NIO Price Distribution")
-```
-</details>
-
-Interactive graph with Plotly. 
-
-```{r interactive,fig.cap='plotly and ggplot2 package'}
 ggplotly(p2)
 ```
 
 Plot using base R graphics hist function.
 
-```{r baseplot,fig.cap='base r visuals'}
+```{r 02-baseplot,fig.cap='base r visuals'}
 hist(Stock_Dist$close, 
      breaks=30,
      main = "NIO Price Distribution", 
      xlab = "Price"
      )
 ```
-Visualization is a powerful tool, that provides a better understanding of our data sets. Visualization amplifies your messaging and simplifies communication to an audience.  Visualization provides an insight to make better decision. We can see from figure \@ref(fig:interactive) and \@ref(fig:baseplot) that the data is bi-modal. There are two groups of buyers here. The first group bought it at around 7 and the other one at 13. There are many factors that we do not see in these two charts such as date and time, current news, trade environment and many more. This are just some of the tools that R can provide.
 
-Lets create another chart comparing the movement of NIO and SPY and see if there is a relationship. Let's also invest 100 dollars and see the difference between the two tickers. The date is set on 01-01-2019.  
+Visualization is a powerful tool, that provides a better understanding of our huge data sets. Visualization amplifies messages and at the same time simplifies communication to an audience.  Visualization provides an insight to make better decision. Figure \@ref(fig:interactive) and \@ref(fig:baseplot) shows a bi-modal distribution. There are two groups of traders in these charts. The first group bought and sold at around 7 and the other one at 13. There are many variables that we do not see in these two charts such as date and time, current news, trade environment and many more which falls under **standard error**. The goal is to minimize the *se*. 
 
-<details><summary>**View Code**</summary>
-```{r relationship, message=FALSE, warning=FALSE}
+Lets create another chart comparing the movement of NIO and SPY and see if there is a relationship by creating an imaginary investment of 100 dollars each on NIO and SPY with a starting date of 01-01-2019. Let's look at the code  
+
+
+```{r 02-NIO}
 # clear everything
 rm(list = ls())
 
+# ticker symbols
 ticker <- c("NIO", "SPY")
 
+# Grab Data using tidyquant package
 StockData <- tq_get(ticker, from = "2019-01-01")
 
-# initial investment of 1000
+# initial investment of 100
 NIO <- StockData %>% 
   filter(symbol =="NIO") %>%  
   select(symbol, date, close) %>% 
   mutate(init=100*close[[1]], 
          actual = close*100, 
          ratio =round(((actual/init)-1)*100, digits=3))
+NIO[1:6,] %>% kable(caption = "NIO $100 Investment") %>% kable_styling()
+```
 
+
+```{r 02-SPY}
 SPY <- StockData %>% 
   filter(symbol =="SPY") %>%  
   select(symbol, date, close) %>% 
   mutate(init=100*close[[1]], 
          actual = close*100, 
          ratio =round(((actual/init)-1)*100, digits=3))
+SPY[1:6,] %>% kable(caption = "SPY $100 Investment") %>% kable_styling()
+```
 
+
+```{r 02-Wrangling, fig.cap='Beta'}
 # Data Wrangling
 NIO <- NIO %>% 
   filter(symbol == "NIO") %>% 
@@ -152,25 +144,21 @@ StockData <- left_join(NIO, SPY, by="date") %>%
 NIO_h <- StockData %>% filter(NIO > 100)
 SPy_h <-StockData %>% filter(SPY> 30)
 
-g4 <- ggplot(StockData, aes(x=NIO, y=SPY),color="grey")+
+ggplot(StockData, aes(x=NIO, y=SPY),color="grey")+
   geom_point(alpha=.5)+
   geom_smooth(method = "lm")+
   labs(title = "Percentage Gain")+
   geom_point(data = NIO_h, aes(x=NIO, y=SPY), color = "red", alpha = .3)+
   geom_point(data = SPy_h, aes(x=NIO, y=SPY), color = "blue",alpha = .3)
 ```
-</details>
-```{r NIOsPy, fig.cap='Beta', warning=FALSE, message=FALSE}
-g4
-```
-We can see from figure \@ref(fig:NIOsPy) that the blue line is almost horizontal with a slightly positive relationship and close to zero - meaning no relationship. The correlation between NIO and SPY is `r cor(StockData$NIO, StockData$SPY)`, which again is close to zero.
+
+We can see from figure \@ref(fig:02-Wrangling) that the blue line is almost horizontal with a slightly positive relationship and close to zero - meaning no relationship. The correlation between NIO and SPY is `r cor(StockData$NIO, StockData$SPY)`, which again is close to zero.
 
 Once we combine all of these graphs. We can create a dashboard using Shiny. [Click to see.](https://ranalytica.shinyapps.io/simple_stock_metric/){target="_blank"}
 
 Now, that you've seen the power of R. What do you think? 
 
-
-## Layout of the Course 
+## Course Layout
 
 The first 2 weeks course discussions are as follows:
 
@@ -195,7 +183,6 @@ Data Science, some call it sexy, others call it
 
 Create a Venn Diagram
 
-<details><summary>**View Code**</summary>
 ```{r fig.width=6}
 library(tidyverse)
 library(ggforce)
@@ -229,7 +216,7 @@ vennd <- ggplot(VennDS, aes(
   geom_text(aes(x = 0 , y = -1, label = "Variety"), size = 5) +
   geom_text(aes(x = 0 , y = .75, label = "Big Data"), size = 5)
 ```
-</details>
+
 
 
 ```{r fig.cap='[@ggforce]'}

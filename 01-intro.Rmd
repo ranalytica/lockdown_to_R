@@ -4,8 +4,8 @@ It was March 2020, still traumatize that Andrew Yang drop-out from the president
 
 I was very optimistic that United States will not have a pandemic in any of its states or properties. At the same time, I was amazed at the many dashboards that were created to monitor the spread of Covid-19 globally. Below is an example code of how easy it is to pull information and create a visual map,
 
-<details><summary>**View Code**</summary>
-```{r message=FALSE, warning=FALSE}
+
+```{r 01-env}
 library(COVID19)
 library(dplyr)
 library(DT)
@@ -24,22 +24,17 @@ MarchCovid <- X %>% filter(date == "2020-03-31") %>%
     rename(country = 
              administrative_area_level_1)
 ## Turn to table
-Table_1.1 <- MarchCovid[1:10, ] %>% 
+MarchCovid[1:10, ] %>% 
   kable(caption = 'March 2020 Covid19 Metrics') %>%   
   kable_styling()
 ```
-</details>
 
-```{r}
-Table_1.1
-```
 
 I started the Data Science Specialization when Covid-19 cases were below 200,000 in the US. These numbers affected peoples lives, their families, love ones and neighbors. It change the way we shop, travel, and live. It made us value our homes and the kitchen became the center of the house again.   
 
 Map visualization can be accomplish with many packages available in R.  One of them is called leaflet package and below will show us how aggressive the spread of Covid19 through out the globe during the end of **March 2020**. 
 
-<details><summary>**View Code**</summary>
-```{r mapLeaflet, message=FALSE, warning=FALSE}
+```{r 01-mapLeaflet, fig.cap='End of March - Covid19 [@leaflet]'}
 library(leaflet)
 library(viridisLite)
 library(viridis)
@@ -88,14 +83,9 @@ Figure_1.1 <- leaflet(data = mapVisData) %>%
    fillOpacity = .7,
    fillColor = ~CountryColor(country)
 ) 
-```
-</details>
-
-```{r mapvis, fig.cap='End of March - Covid19 [@leaflet]'}
 Figure_1.1
 ```
 
-<br>
-At the beginning of the class, I was not able to code the way I code in R now. The progression and knowledge skills increase as I consume more of the information. Again, I had vivid dreams while taking these classes and if you decided to pursue the same route, may you have sweetest of all dreams. 
+At the beginning of the class, I was not able to code the way I code in R now. The progression and knowledge skills increase as I consume more of the information. Again, I had vivid dreams while taking these classes and if you decided to pursue the same route, may you have sweetest of all dreams. I hope this book gets you through the night.  
 
 
