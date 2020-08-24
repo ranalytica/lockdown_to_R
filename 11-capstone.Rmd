@@ -1,34 +1,117 @@
 # Data Science Capstone
 
-Now that we are here. We have gained so many skill sets. This course is a culmination of all the knowledge learned during the specialization. I utilize my time efficiently during Covid19-lockdown. Learned valuable skills from installing R and RStudio, loading, subsetting, wrangling, exploring, using statistical inference, and applying machine learning to our data sets. I now have the ability to create data products geared to a specific customers. 
+```{r 11-globe_env, include=FALSE, echo=FALSE}
+# Add a common class name for every chunks
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
 
-## Environment
+This is the final course of the specialization. It combines all the knowledge and skills learned during the course - from understanding data science, to installing R and RStudio, loading, subsetting, wrangling, exploring, using statistical inference, training, and testing our data sets based on applicable machine learning. 
+
+The capstone is a partnership between Johns Hopkins University and Swiftkey. I have used this product a while back in 2013-2015. I was amazed at the innovation on digital keyboards. The ability to slide your finger across the keyboard without lifting it. It then predicts the word with high accuracy. This course provides a blueprint on how to achieve the word prediction technology behind it. 
+
+The capstone will be evaluated based on the following assessments:
+
+1. An introductory quiz to test whether you have downloaded and can manipulate the data.
+2. An intermediate R markdown report that describes in plain language, plots, and code your exploratory analysis of the course data set.
+3. Two natural language processing quizzes, where you apply your predictive model to real data to check how it is working.
+4. A Shiny app that takes as input a phrase (multiple words), one clicks submit, and it predicts the next word.
+5. A 5 slide deck created with R presentations pitching your algorithm and app to your boss or investor.
+
+## First Week 
+
+The first week involves understanding text mining infrastructure in R and exploring the data sets provided from the course. The process I took to understand the subject are as follows:
+
+1. Read the material 
+  - [Journal of Statistical Software](https://www.jstatsoft.org/article/view/v025i05)
+  - [CRAN: Natural Language Processing](https://cran.r-project.org/web/views/NaturalLanguageProcessing.html)
+  - [Natural Language Processing](https://web.stanford.edu/~jurafsky/NLPCourseraSlides.html)
+2. Apply the learned material and exploring the data sets which 
+3. Opens more questions such as:
+  - Optimizing for speed vs. accuracy?
+  - Are there any other framework that can do this better?
+  - What technology are out there in NLP language?
+
+The exploration leads to more questions to optimize a solution. 
+  
+**Below is the environment needed to examine our data sets.**
 
 ```{r setup, echo=TRUE, cache=FALSE}
 enviro <- 
-  c("rmdformats","knitr","rvest", "tidytext", "tm", "tidyverse", "NLP", "knitr", "readr", "openNLP", "glue", "RWeka", "stringi", "SnowballC", "wordcloud2")
-
+  c("rmdformats", "knitr",
+    "rvest", "tidytext", 
+    "tm", "tidyverse", 
+    "NLP", "knitr", 
+    "readr", "openNLP", 
+    "glue", "RWeka", 
+    "stringi", "SnowballC", 
+    "wordcloud2", "caret",
+    "disk.frame"
+  )
 for (i in 1:length(enviro)){
-library(enviro[i], character.only = TRUE)
+  library(enviro[i], 
+  character.only = TRUE)
 }
+```
 
+Data sets can be found [here](https://d396qusza40orc.cloudfront.net/ds scapstone/dataset/Coursera-SwiftKey.zip) and we will follow this flow to understand the data:
 
+- Define the goal or the problem
+- Download the data
+- Create a data summary and understand data integrity
+- Text organization
+- Feature extraction
+- Analysis
+- Insights that solves the problem or create new opportunities
+
+Before we dive-in, let us define terminologies in NLP infrastructure. A quick google search should be able to help us with the following: 
+
+1. Text Mining
+2. Corpus
+3. Tokenization
+4. Ngram
+
+## Text Mining
+
+Amazon product reviews, Yelp, reddit, twitter feeds, facebook, LinkedIn are some of the sites that are text-mined to provide market research, sentiment analysis for a product and in many cases to build a data product. An example of a data product I have seen are tradingviews.com and stocktwits.com where they measure users bullish or bearish sentiment in a particular publicly traded company. Here is a basic example of text mining.
+
+```{r}
+# Mining our openning paragraph
+samp_text <- "This is the final course of the specialization. It combines all the knowledge and skills learned during the course - from understanding data science, to installing R and RStudio, loading, subsetting, wrangling, exploring, using statistical inference, training, and testing our data sets based on applicable machine learning. The capstone is a partnership between Johns Hopkins University and Swiftkey. I have used this product a while back in 2013-2015. I was amazed at the innovation on digital keyboards. The ability to slide your finger across the keyboard without lifting it. It then predicts the word with high accuracy. This course provides a blueprint on how to achieve the word prediction technology behind it."
+
+# 10 most frequent terms
+sampdf <- data_frame(text = samp_text) %>% 
+    unnest_tokens(word, text) %>%    # split words
+    anti_join(stop_words) %>%    # take out "a", "an", "the", etc.
+    count(word, sort = TRUE)    # count occurrences
+
+sampdf[1:10,] %>% kable(caption = 'Text Mining') %>% kableExtra::kable_styling()
 ```
 
 
-## Data Loading and Summary
+```{r, fig.cap='Text Mining'}
+sampdf[1:5,] %>% ggplot(aes(y=reorder(word,n), x=n))+geom_col()+labs(y= "Words/Characters", x="Frequency", title = "Text Mining")
+```
 
-```{r download, cache=TRUE, results='hide'}
+### Corpus
+
+Corpus is a collection of written texts, especially the entire works of a particular author or a body of writing on a particular subject. Let's look at our data set for the capstone which can be found [here](https://d396qusza40orc.cloudfront.net/ds scapstone/dataset/Coursera-SwiftKey.zip). Below is a code that will give as the summary of our corpus. 
+
+
+```{r 11-download, cache=TRUE, results='hide'}
 ## Download file (run at the beginning only) ---------
 
 # if (!file.exists("data")) {
 #  dir.create("data")
 #}
-#download.file(
+# download.file(
 #  "https://d396qusza40orc.cloudfront.net/ds scapstone/dataset/Coursera-SwiftKey.zip",
 #  destfile = "./data/Coursera-SwiftKey.zip"
-#)
-#unzip("./data/Coursera-SwiftKey.zip", exdir = "./data")
+# )
+# unzip("./data/Coursera-SwiftKey.zip", exdir = "./data")
 
 ## Combining -----------
 files2 <- list.dirs("./data/final")
@@ -82,18 +165,38 @@ list_files <- tibble(
         Average = Mean_Words,
         Max = Max_Words
 )
+```
 
+```{r 11-txt_sum}
 # knit to table -----------
-table1 <- kable(list_files, align = c(rep('c', times = 5)))
+kable(list_files, caption = 'Corpus-Collection of Text',
+                align = c(rep('c', times = 5))) %>% 
+        kableExtra::kable_styling()
 ```
 
-```{r fig.cap='file'}
-table1 
+Table \@ref(fig:11-txt_sum), provides the breakdown of name, size, number of lines, and word summary. The data sets have a collection of 4 languages composed of blogs, news, and twitter.  The languages are in German, English, Finnish, and Russian. All characters are based on roman characters and in several cases I saw several emoji character inside twitter corpus 
+
+3. Tokenization
+4. Semantic parsing -
+4. Bag of Words -
+5. Sentiment Analysis -
+
+### Tokenization 
+
+Tokens are the building blocks of Natural Language. Tokenization is a way of separating text into smaller units using a delimeter such as space or hyphen. Tokens can be words, characters, or subwords [@pai]. 
+
+An example of a word token from a sentence: "You are the best", can be tokenized based on space. We are assuming space is a delimiter. The tokenization of the sentence results in 4 tokens You_are_the_best. 
+
+
+```{r}
+
 ```
 
-## Processing data for tokenization
 
 ```{r SourceData, cache=TRUE}
+library(disk.frame)
+setup_disk.frame()
+options(future.globals.maxSize = Inf)
 set.seed(420)
 source_data <- DirSource(ldir)
 
@@ -117,7 +220,7 @@ meta(corpus_data[[5]], "id")
 
 ## Transforming Text
 
-1. Tokenization - identifying appropriate tokens such as words, punctuation, and numbers. Writing a function that takes a file as input and returns a tokenized version of it.
+1. Tokenization - identifying appropriate tokens such as words, punctuation, and numbers. Writing a function that takes a file as input and returns tokenized version of it.
 
 2. Profanity filtering ------------------
 

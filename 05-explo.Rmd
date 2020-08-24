@@ -1,5 +1,14 @@
 # Applications
 
+```{r 05-globe_env, include=FALSE, echo=FALSE}
+# Add a common class name for every chunks
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
 Some _significant_ applications are demonstrated in this chapter.
 
 ## Example one

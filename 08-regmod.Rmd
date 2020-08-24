@@ -1,1 +1,10 @@
 # Regression Models
+
+```{r 08-globe_env, include=FALSE, echo=FALSE}
+# Add a common class name for every chunks
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```

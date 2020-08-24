@@ -24,10 +24,7 @@ output:
 knitr::opts_chunk$set(
   echo = TRUE,
   message = FALSE,
-  warning = FALSE, 
-  fig.width = 12, 
-  fig.height = 8,
-  tidy = TRUE
+  warning = FALSE 
 )
 ```
 
@@ -60,7 +57,7 @@ $(document).ready(function () {
 </script>
 ', sep = "\n")
 
-readr::write_lines(htmlhead, path = "header.html")
+readr::write_lines(htmlhead, path = "header.html") 
 ```
 
 ```{r echo=FALSE}
@@ -91,6 +88,8 @@ As of today, July 29, 2020 I'm currently at course 10 Data Science Capstone - We
 
 Professor Roger D. Peng, PhD, Professor Brian Caffo, PhD and Professor Jeff Leek, PhD - from the bottom of my heart - thank you so much. 
 
+Also, thank you for the code folding solution from Sébastien Rochette. The code is use through-out this book [@codefold].  
+
 ## Expect To Have Lucid Dreams {-}
 
 <div align="center">“I had a dream about you. It's been a while<br>since I could remember any of my dreams,<br>and still, this one has left me with such strong impression.<br>[@ninkovic]"</div>
@@ -100,7 +99,7 @@ That quote from Aleksandra is one of the many stories that occurred to me while 
 
 There was no way for me to complete this program without the help from [google.com](https://google.com), Yihue Xie, PhD - books, Professor Handley Wickham, PhD - books and to all the people that contributed to [stackoverflow](https://stackoverflow.com/) - Thank You.   
 
-## Why Create a bookdown of Experience? {-}
+## Motivation {-}
 
 The number one reason I created a bookdown of my experiences in R is to thank the community that help me get here. To have a center place for most of the code that I use on a daily basis. I hope people find this book helpful without losing sleep. I still encourage anyone to use google and stackoverflow. They are our friend.
 

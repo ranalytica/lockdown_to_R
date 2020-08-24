@@ -1,5 +1,14 @@
 # Data Science Toolbox
 
+```{r 02-globe_env, include=FALSE, echo=FALSE}
+# Add a common class name for every chunks
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
 The Data Science Toolbox provides a basic foundation in creating a work environment as a data scientist. This environment is based on the R language. It is an environment for statistical computing, graphics and so much more. It is similar to the S language developed at Bell Laboratories by John Chambers and his team [@wiki]. R language is created by Ross Ihaka and Robert Gentleman at the University of Auckland, New Zealand and is developed by the R Development Core Team. Thus, R is named after the first initials of the co-creators Ross & Robert [@wikipedia]. 
 
 ## More Than a Statistical Language
@@ -11,7 +20,6 @@ Below is an example of a reproducible expression in building a simple metric sto
 
 ```{r 02-env}
 # We will use all libraries through out this chapter
-library(shiny)
 library(plotly)
 library(tidyquant)
 library(ggplot2)
@@ -22,75 +30,42 @@ library(timetk)
 library(glue)
 library(tidyr)
 
-# You can change to whatever ticker you want
+# You can change ticker to whatever ticker you want
 ticker <- c("NIO", "SPY")
+
 # tidyquant package for tidy format
-StockData <- tq_get(ticker, from = "2020-06-01")
+StockData <- tq_get(ticker, 
+                    from = "2019-01-01")
+
 # table format
-StockData[1:6,] %>% kable(caption = 'NIO vs. SPY') %>% kable_styling()
+StockData[1:6,] %>% 
+  kable(caption = 'NIO vs. SPY') %>% 
+  kable_styling()
 ```
 
 See below for time series chart of NIO's daily closing price. 
 
-
 ```{r 02-TS, fig.cap='NIO Price'}
-StockData %>% group_by(symbol)   %>% e_charts(date) %>% e_line(close)
+NIOData <- StockData %>% filter(symbol=="NIO")
 
-# StockData %>% filter(symbol == "NIO") %>% select(symbol, date, close) %>% 
-#  spread(key = symbol, value = close) %>% tk_xts() %>% 
-#  dygraph(height = 250,main = "NIO Price History", ylab = "Price") %>% dyRangeSelector()
+NIOData$date <- factor(NIOData$date)
+
+# using echarts4r package to draw the plot
+NIOData %>% 
+  e_charts(date) %>%
+  # candlestick
+  e_candle(open, close, low, high, name= "NIO") %>%
+  e_axis_labels(y="Price", x="Date") %>% 
+  e_datazoom(type="slider") %>% 
+  e_title("NIO Price History") %>% 
+  e_tooltip("axis")
 ```
 
-Compare NIO to an Index.
+Imagine communicating these data points to your client without any visual aids. It would take forever. Visualization is a powerful tool, that provides a better understanding of our huge data sets. Figure \@ref(fig:02-TS), with just a quick glance we can see the x axis as "Date" with a range of Jan 01, 2019 to Aug 04, 2020, y axis as "Price" with a range of 0-18 and ticker symbol NIO. Candlestick charting tells us close,  open, low , and high price of the stock on a specific date. We can also use the slider to zoom in on a specific dates.  
 
-```{r 02-compare, fig.cap='NIO vs. SPY'}
-StockData %>% select(symbol, date, close) %>% 
-  spread(key=symbol, value = close) %>% 
-  tk_xts() %>% 
-  dygraph(height = 250,main = "NIO vs. SPY") %>% 
-  dyRebase(value = 1) %>% 
-  dyRangeSelector()
-```
+Visualization amplifies messages and at the same time simplifies communication to an audience.  Visualization provides an insight to make better decision. 
 
-Stock Price distribution 
-
-```{r 02-distribution, fig.cap='plotly and ggplot2 package'}
-# if needed binning function Freedman Diconis Rule [@fd]
-fd=function(x) {
-  n=length(x)
-  r=IQR(x)
-  2*r/n^(1/3)
-}
-
-Stock_Dist <- StockData %>% 
-    filter(symbol=="NIO")
-  
-p2 <- ggplot(Stock_Dist, 
-    aes(x=close)) +
-  geom_histogram(aes(y=..density..),
-     color="black",
-     fill="grey") +
-  geom_density(alpha=.2, 
-               fill="#FF6666") + 
-  labs(x="NIO", 
-     y="Frequency",
-     title = "NIO Price Distribution")
-ggplotly(p2)
-```
-
-Plot using base R graphics hist function.
-
-```{r 02-baseplot,fig.cap='base r visuals'}
-hist(Stock_Dist$close, 
-     breaks=30,
-     main = "NIO Price Distribution", 
-     xlab = "Price"
-     )
-```
-
-Visualization is a powerful tool, that provides a better understanding of our huge data sets. Visualization amplifies messages and at the same time simplifies communication to an audience.  Visualization provides an insight to make better decision. Figure \@ref(fig:interactive) and \@ref(fig:baseplot) shows a bi-modal distribution. There are two groups of traders in these charts. The first group bought and sold at around 7 and the other one at 13. There are many variables that we do not see in these two charts such as date and time, current news, trade environment and many more which falls under **standard error**. The goal is to minimize the *se*. 
-
-Lets create another chart comparing the movement of NIO and SPY and see if there is a relationship by creating an imaginary investment of 100 dollars each on NIO and SPY with a starting date of 01-01-2019. Let's look at the code  
+Lets create another chart comparing the movement of NIO and SPY and see if there is a relationship by creating an imaginary investment of 100 dollars each on NIO and SPY with a starting date of 01-01-2019. Let's look at the code below:
 
 
 ```{r 02-NIO}
@@ -110,7 +85,9 @@ NIO <- StockData %>%
   mutate(init=100*close[[1]], 
          actual = close*100, 
          ratio =round(((actual/init)-1)*100, digits=3))
-NIO[1:6,] %>% kable(caption = "NIO $100 Investment") %>% kable_styling()
+NIO[1:6,] %>% 
+  kable(caption = "NIO $100 Investment") %>% 
+  kable_styling()
 ```
 
 
@@ -121,7 +98,10 @@ SPY <- StockData %>%
   mutate(init=100*close[[1]], 
          actual = close*100, 
          ratio =round(((actual/init)-1)*100, digits=3))
-SPY[1:6,] %>% kable(caption = "SPY $100 Investment") %>% kable_styling()
+
+SPY[1:6,] %>% 
+  kable(caption = "SPY $100 Investment") %>% 
+  kable_styling()
 ```
 
 
@@ -138,23 +118,126 @@ SPY <- SPY %>%
   rename(SPY = ratio)
 
 # Combining data frame
-StockData <- left_join(NIO, SPY, by="date") %>% 
+StockData <- 
+  left_join(NIO, SPY, by="date") %>% 
   select(date, NIO, SPY)
 
-NIO_h <- StockData %>% filter(NIO > 100)
-SPy_h <-StockData %>% filter(SPY> 30)
+NIO_h <- StockData %>% 
+         filter(NIO > 100)
 
-ggplot(StockData, aes(x=NIO, y=SPY),color="grey")+
-  geom_point(alpha=.5)+
-  geom_smooth(method = "lm")+
-  labs(title = "Percentage Gain")+
-  geom_point(data = NIO_h, aes(x=NIO, y=SPY), color = "red", alpha = .3)+
-  geom_point(data = SPy_h, aes(x=NIO, y=SPY), color = "blue",alpha = .3)
+
+SPy_h <-StockData %>% 
+        filter(SPY> 30)
+
+ggplot(StockData, 
+       aes(x=NIO, 
+           y=SPY),
+        color="grey") +
+  geom_point(alpha=.5) +
+  geom_smooth(method = "lm") +
+  labs(title = "Percentage Gain") +
+  geom_point(data = NIO_h, 
+             aes(x=NIO, y=SPY), 
+             color = "red", 
+             alpha = .3) +
+  geom_point(data = SPy_h, 
+             aes(x=NIO, 
+                 y=SPY), 
+             color = "blue",
+             alpha = .3)
 ```
 
-We can see from figure \@ref(fig:02-Wrangling) that the blue line is almost horizontal with a slightly positive relationship and close to zero - meaning no relationship. The correlation between NIO and SPY is `r cor(StockData$NIO, StockData$SPY)`, which again is close to zero.
+We can see from figure \@ref(fig:02-Wrangling) that the blue line is almost horizontal with a slightly positive relationship and close to zero - meaning no relationship. The correlation between NIO and SPY is `r cor(StockData$NIO, StockData$SPY)`.
 
-Once we combine all of these graphs. We can create a dashboard using Shiny. [Click to see.](https://ranalytica.shinyapps.io/simple_stock_metric/){target="_blank"}
+```{r 02-compare, fig.cap='NIO vs. SPY'}
+StockData$date<-factor(StockData$date)
+
+# using echarts4r package to draw plot
+StockData[-1,] %>%  
+  e_charts(date) %>% 
+  e_line(NIO) %>% 
+  e_line(SPY) %>%  
+  e_datazoom(type="slider") %>% 
+  e_title("NIO vs. SPY") %>%
+  e_tooltip("axis")
+```
+
+Stock Price distribution 
+
+```{r 02-distribution, fig.cap='plotly and ggplot2 package'}
+# clear everything
+rm(list = ls())
+
+# ticker symbols
+ticker <- c("NIO", "SPY")
+
+# Grab Data using tidyquant package
+StockData <- tq_get(ticker, from = "2019-01-01")
+
+# if needed binning function Freedman Diconis Rule [@fd]
+# fd=function(x) {n=length(x) r=IQR(x)2*r/n^(1/3)}
+
+Stock_Dist <- StockData %>% 
+    filter(symbol=="NIO")
+  
+Stock_Dist %>%
+  e_charts() %>% 
+  e_histogram(close, 
+              name = "NIO Price Distribution") %>% 
+  e_density(close, 
+            name = "density", 
+            areaStyle = list(
+              opacity = .4), 
+            smooth = TRUE, y_index = 1) %>% 
+  e_tooltip()
+```
+
+Plot using base R graphics hist function.
+
+```{r 02-baseplot,fig.cap='base r visuals'}
+hist(Stock_Dist$close, 
+     breaks=30,
+     main = "NIO Price Distribution", 
+     xlab = "Price"
+     )
+```
+
+Figure \@ref(fig:02-distribution) and \@ref(fig:02-baseplot) shows a bi-modal distribution. There are two groups of traders in these charts. The first group bought and sold at around 7 and the other one at 13. There are many variables that we do not see in these two charts such as date and time, current news, trade environment and many more which falls under **standard error**. The goal is to minimize the *se*. 
+
+Below is another package that turns your ggplot into 3d-plot using rayrender:
+
+```{r 02-fancyplot, fig.cap='fancy plot [@ray]'}
+library(rayrender)
+library(rayshader)
+fd = function(x) {
+    n = length(x)
+    r = IQR(x)
+    2 * r/n^(1/3)
+}
+
+p2 <- ggplot(Stock_Dist, aes(x = close)) + 
+      geom_histogram(aes
+                     (y = ..density..), 
+                     color = "black", 
+                     fill = "grey") + 
+      geom_density(
+        alpha = 0.2, 
+        fill = "#FF6666") + 
+      labs(x = "NIO", 
+           y = "Frequency", 
+           title = "NIO Price Distribution")
+
+
+plot_gg(p2, width = 3.5, multicore = TRUE, windowsize = c(800, 800), 
+        zoom = .65, phi = 50, theta = 0, sunangle = 225, soliddepth = -100)
+
+Sys.sleep(0.2)
+
+render_snapshot(clear = TRUE)
+```
+
+
+Once we combine all of these graphs. We can build a minimum reproducible product using Shiny. [Click to see.](https://ranalytica.shinyapps.io/simple_stock_metric/){target="_blank"}
 
 Now, that you've seen the power of R. What do you think? 
 
@@ -179,11 +262,10 @@ Third and fourth week discussion as follows:
 
 ## What is Data Science?
 
-Data Science, some call it sexy, others call it 
+Data Science core is using data to answer questions. It is a combination of mathematics, computer science, and domain environment pertaining to the data. The domain environment is the field that the data belongs to for example such as finance, environment, biology, genetics, psychology, etc.
 
-Create a Venn Diagram
 
-```{r fig.width=6}
+```{r 02-vennDS, fig.cap='Data Science Venn Diagram [@vdgm]'}
 library(tidyverse)
 library(ggforce)
 
@@ -200,32 +282,127 @@ VennDS <- tibble(
           'Volume')
 )
 # ggplot argument x0, y0, r are all required,
-vennd <- ggplot(VennDS, aes(
+v1 <- ggplot(VennDS, aes(
   x0 = x,
   y0 = y,
   r = 1.5,
-  fill = cat
-)) + geom_circle(
-  alpha = 0.25,
+  fill = cat)) + 
+  geom_circle(alpha = 0.25,
   size = 1,
   color = "transparent",
   show.legend = FALSE) + 
   # using geom_text to draw on the graph
-  geom_text(aes(x = -1.5 , y = 1, label = "Volume"), size = 5) +       
-  geom_text(aes(x = 1.5 , y = 1, label = "Velocity"), size = 5) +
-  geom_text(aes(x = 0 , y = -1, label = "Variety"), size = 5) +
-  geom_text(aes(x = 0 , y = .75, label = "Big Data"), size = 5)
+  geom_text(aes(x = -1.5, 
+                y = 1, 
+                label = "Computer Science"), 
+            size = 5) +       
+  geom_text(aes(x = 1.5, 
+                y = 1, 
+                label = "Math & Statistics "), 
+            size = 5) +       
+  geom_text(aes(x = 1.5, 
+                y = .7, 
+                label = " Knowledge"), 
+            size = 5) +
+  geom_text(aes(x = 0, 
+                y = -1, 
+                label = "Domain Environment"), 
+            size = 5) +
+  geom_text(aes(x = 0, 
+                y = .75, 
+                label = "Data Science"), 
+            size = 5) +
+  geom_text(aes(x = 0 , 
+                y = 1.5, 
+                label = "Machine"), 
+            size = 5) +
+  geom_text(aes(x = 0, 
+                y = 1.2, 
+                label = "Learning"), 
+            size = 5) +
+  geom_text(aes(x = -.9, 
+                y = 0, 
+                label = "Danger Zone"), 
+            size = 5) +
+  geom_text(aes(x = .9, 
+                y = .3, 
+                label = "Traditional "),
+            size = 5) +
+  geom_text(aes(x = .9, 
+                y = 0, 
+                label = " Research"), 
+            size = 5) + 
+  # remove x and y labels
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+v1
 ```
 
+The Data Science venn diagram figure \@ref(fig:02-vennDS), shows us the combination of three fields - computer science, math & statistics, and domain environment (i.e. genetics, finance, etc.). The core of Data Science is using the data to answer our question. Generating the right question will help us decide what data to take in and out of our environment. An example of an ineffective question is “What is the sales for company abc?” What about an effective question - “What is the quarterly sales for the last 5 years for company abc? What are the top 10 products in sales/profit/numbers in the last year by month?”
 
+Once the question is generated the following are basic routine in R/RStudio:
 
-```{r fig.cap='[@ggforce]'}
-vennd 
-```
+1. Grabbing the data 
+2. Data wrangling and making them tidy
+3. Exploratory Analysis
+4. Reproducible Research
+5. Statistical Inference
+6. Regression Models
+7. Practical Machine Learning
+8. Insights
 
 ## What is Data?
 
-Need input
+There are so many data being generated everyday. Take me for example, I've sent 5 emails today, reviewed and created trading strategy for next week, check my reddit, stocktwits, webull, and twitter for sentiment analysis, shared several photos to my family, check-out my Tesla app to monitor Solar Panel and battery, and reviewed my nest video monitoring. These are all completed in early morning routine. 
+
+Data is coming from many forms your typical emails, social media, internet of things like Tesla solar panels/Powerwall connected to the internet and google's home monitoring Nest. All of these data are a combination of numerical, categorical, and it some cases are often big which falls under binary large objects or "BLOB". 
+
+
+```{r, 02-bigdata, fig.cap='The **V**s of Big Data'}
+# ggplot argument x0, y0, r are all required,
+v2 <- ggplot(VennDS, aes(
+  x0 = x,
+  y0 = y,
+  r = 1.5,
+  fill = cat
+)) + geom_circle(alpha = 0.25,
+                 size = 1,
+                 color = "transparent",
+                 show.legend = FALSE) + 
+# using geom_text to draw on the graph
+  geom_text(aes(x = -1.5, 
+                y = 1, 
+                label = "Volume"), 
+            size = 5) +       
+  geom_text(aes(x = 1.5, 
+                y = 1, 
+                label = "Velocity"), 
+            size = 5) +
+  geom_text(aes(x = 0, 
+                y = -1, 
+                label = "Variety"), 
+            size = 5) +
+  geom_text(aes(x = 0, 
+                y = .75, 
+                label = "Big Data"), 
+            size = 5) + 
+# remove x and y labels
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+v2
+```
+
+The Data Science field is growing due to the massive data being generated. Figure \@ref(fig:02-bigdata) shows as the V’s of big data which are Volume, Variety and Velocity. Data is everywhere and we generate on average 1.7mb of data every second by every person during 2020 about 2.5 quintillion bytes are produced by humans every day. There are 4.57 billion active internet users around the world and it will continue to grow [@bulao].
 
 ## What is a data scientist?
 

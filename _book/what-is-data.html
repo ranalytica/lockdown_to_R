@@ -24,7 +24,7 @@
 <meta name="author" content="Richard Nacianceno" />
 
 
-<meta name="date" content="2020-08-06" />
+<meta name="date" content="2020-08-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -64,20 +64,6 @@
 <script src="libs/echarts4r-4.8.0/ecStat.min.js"></script>
 <script src="libs/echarts4r-4.8.0/dataTool.min.js"></script>
 <script src="libs/echarts4r-binding-0.3.2/echarts4r.js"></script>
-<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
-<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
-<script src="libs/dygraphs-1.1.1/shapes.js"></script>
-<script src="libs/moment-2.8.4/moment.js"></script>
-<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
-<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
-<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
-<script src="libs/Dygraph.Plugins.Rebase-1.0/rebase.js"></script>
-<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 
 <script>
 /* ========================================================================
@@ -509,7 +495,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a><ul>
 <li class="chapter" data-level="" data-path="expect-to-have-lucid-dreams.html"><a href="expect-to-have-lucid-dreams.html"><i class="fa fa-check"></i>Expect To Have Lucid Dreams</a></li>
-<li class="chapter" data-level="" data-path="why-create-a-bookdown-of-experience.html"><a href="why-create-a-bookdown-of-experience.html"><i class="fa fa-check"></i>Why Create a bookdown of Experience?</a></li>
+<li class="chapter" data-level="" data-path="motivation.html"><a href="motivation.html"><i class="fa fa-check"></i>Motivation</a></li>
 <li class="chapter" data-level="" data-path="in-retrospect.html"><a href="in-retrospect.html"><i class="fa fa-check"></i>In Retrospect</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
@@ -532,10 +518,8 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9" data-path="practical-machine-learning.html"><a href="practical-machine-learning.html"><i class="fa fa-check"></i><b>9</b> Practical Machine Learning</a></li>
 <li class="chapter" data-level="10" data-path="developing-data-products.html"><a href="developing-data-products.html"><i class="fa fa-check"></i><b>10</b> Developing Data Products</a></li>
 <li class="chapter" data-level="11" data-path="data-science-capstone.html"><a href="data-science-capstone.html"><i class="fa fa-check"></i><b>11</b> Data Science Capstone</a><ul>
-<li class="chapter" data-level="11.1" data-path="environment.html"><a href="environment.html"><i class="fa fa-check"></i><b>11.1</b> Environment</a></li>
-<li class="chapter" data-level="11.2" data-path="data-loading-and-summary.html"><a href="data-loading-and-summary.html"><i class="fa fa-check"></i><b>11.2</b> Data Loading and Summary</a></li>
-<li class="chapter" data-level="11.3" data-path="processing-data-for-tokenization.html"><a href="processing-data-for-tokenization.html"><i class="fa fa-check"></i><b>11.3</b> Processing data for tokenization</a></li>
-<li class="chapter" data-level="11.4" data-path="transforming-text.html"><a href="transforming-text.html"><i class="fa fa-check"></i><b>11.4</b> Transforming Text</a></li>
+<li class="chapter" data-level="11.1" data-path="processing-data-for-tokenization.html"><a href="processing-data-for-tokenization.html"><i class="fa fa-check"></i><b>11.1</b> Processing data for tokenization</a></li>
+<li class="chapter" data-level="11.2" data-path="transforming-text.html"><a href="transforming-text.html"><i class="fa fa-check"></i><b>11.2</b> Transforming Text</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -560,7 +544,57 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="what-is-data" class="section level2">
 <h2><span class="header-section-number">2.4</span> What is Data?</h2>
-<p>Need input</p>
+<p>There are so many data being generated everyday. Take me for example, I’ve sent 5 emails today, reviewed and created trading strategy for next week, check my reddit, stocktwits, webull, and twitter for sentiment analysis, shared several photos to my family, check-out my Tesla app to monitor Solar Panel and battery, and reviewed my nest video monitoring. These are all completed in early morning routine.</p>
+<p>Data is coming from many forms your typical emails, social media, internet of things like Tesla solar panels/Powerwall connected to the internet and google’s home monitoring Nest. All of these data are a combination of numerical, categorical, and it some cases are often big which falls under binary large objects or “BLOB”.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="what-is-data.html#cb13-1"></a><span class="co"># ggplot argument x0, y0, r are all required,</span></span>
+<span id="cb13-2"><a href="what-is-data.html#cb13-2"></a>v2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(VennDS, <span class="kw">aes</span>(</span>
+<span id="cb13-3"><a href="what-is-data.html#cb13-3"></a>  <span class="dt">x0 =</span> x,</span>
+<span id="cb13-4"><a href="what-is-data.html#cb13-4"></a>  <span class="dt">y0 =</span> y,</span>
+<span id="cb13-5"><a href="what-is-data.html#cb13-5"></a>  <span class="dt">r =</span> <span class="fl">1.5</span>,</span>
+<span id="cb13-6"><a href="what-is-data.html#cb13-6"></a>  <span class="dt">fill =</span> cat</span>
+<span id="cb13-7"><a href="what-is-data.html#cb13-7"></a>)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_circle</span>(<span class="dt">alpha =</span> <span class="fl">0.25</span>,</span>
+<span id="cb13-8"><a href="what-is-data.html#cb13-8"></a>                 <span class="dt">size =</span> <span class="dv">1</span>,</span>
+<span id="cb13-9"><a href="what-is-data.html#cb13-9"></a>                 <span class="dt">color =</span> <span class="st">&quot;transparent&quot;</span>,</span>
+<span id="cb13-10"><a href="what-is-data.html#cb13-10"></a>                 <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb13-11"><a href="what-is-data.html#cb13-11"></a><span class="co"># using geom_text to draw on the graph</span></span>
+<span id="cb13-12"><a href="what-is-data.html#cb13-12"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="fl">-1.5</span>, </span>
+<span id="cb13-13"><a href="what-is-data.html#cb13-13"></a>                <span class="dt">y =</span> <span class="dv">1</span>, </span>
+<span id="cb13-14"><a href="what-is-data.html#cb13-14"></a>                <span class="dt">label =</span> <span class="st">&quot;Volume&quot;</span>), </span>
+<span id="cb13-15"><a href="what-is-data.html#cb13-15"></a>            <span class="dt">size =</span> <span class="dv">5</span>) <span class="op">+</span><span class="st">       </span></span>
+<span id="cb13-16"><a href="what-is-data.html#cb13-16"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="fl">1.5</span>, </span>
+<span id="cb13-17"><a href="what-is-data.html#cb13-17"></a>                <span class="dt">y =</span> <span class="dv">1</span>, </span>
+<span id="cb13-18"><a href="what-is-data.html#cb13-18"></a>                <span class="dt">label =</span> <span class="st">&quot;Velocity&quot;</span>), </span>
+<span id="cb13-19"><a href="what-is-data.html#cb13-19"></a>            <span class="dt">size =</span> <span class="dv">5</span>) <span class="op">+</span></span>
+<span id="cb13-20"><a href="what-is-data.html#cb13-20"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">0</span>, </span>
+<span id="cb13-21"><a href="what-is-data.html#cb13-21"></a>                <span class="dt">y =</span> <span class="dv">-1</span>, </span>
+<span id="cb13-22"><a href="what-is-data.html#cb13-22"></a>                <span class="dt">label =</span> <span class="st">&quot;Variety&quot;</span>), </span>
+<span id="cb13-23"><a href="what-is-data.html#cb13-23"></a>            <span class="dt">size =</span> <span class="dv">5</span>) <span class="op">+</span></span>
+<span id="cb13-24"><a href="what-is-data.html#cb13-24"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">0</span>, </span>
+<span id="cb13-25"><a href="what-is-data.html#cb13-25"></a>                <span class="dt">y =</span> <span class="fl">.75</span>, </span>
+<span id="cb13-26"><a href="what-is-data.html#cb13-26"></a>                <span class="dt">label =</span> <span class="st">&quot;Big Data&quot;</span>), </span>
+<span id="cb13-27"><a href="what-is-data.html#cb13-27"></a>            <span class="dt">size =</span> <span class="dv">5</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb13-28"><a href="what-is-data.html#cb13-28"></a><span class="co"># remove x and y labels</span></span>
+<span id="cb13-29"><a href="what-is-data.html#cb13-29"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title.x=</span><span class="kw">element_blank</span>(),</span>
+<span id="cb13-30"><a href="what-is-data.html#cb13-30"></a>        <span class="dt">axis.text.x=</span><span class="kw">element_blank</span>(),</span>
+<span id="cb13-31"><a href="what-is-data.html#cb13-31"></a>        <span class="dt">axis.ticks.x=</span><span class="kw">element_blank</span>(),</span>
+<span id="cb13-32"><a href="what-is-data.html#cb13-32"></a>        <span class="dt">axis.title.y=</span><span class="kw">element_blank</span>(),</span>
+<span id="cb13-33"><a href="what-is-data.html#cb13-33"></a>        <span class="dt">axis.text.y=</span><span class="kw">element_blank</span>(),</span>
+<span id="cb13-34"><a href="what-is-data.html#cb13-34"></a>        <span class="dt">axis.ticks.y=</span><span class="kw">element_blank</span>())</span>
+<span id="cb13-35"><a href="what-is-data.html#cb13-35"></a></span>
+<span id="cb13-36"><a href="what-is-data.html#cb13-36"></a>v2</span></code></pre></div>
+<div class="figure"><span id="fig:02-bigdata"></span>
+<img src="r_full_stack_files/figure-html/02-bigdata-1.png" alt="The **V**s of Big Data" width="672" />
+<p class="caption">
+Figure 2.8: The <strong>V</strong>s of Big Data
+</p>
+</div>
+<p>The Data Science field is growing due to the massive data being generated. Figure <a href="what-is-data.html#fig:02-bigdata">2.8</a> shows as the V’s of big data which are Volume, Variety and Velocity. Data is everywhere and we generate on average 1.7mb of data every second by every person during 2020 about 2.5 quintillion bytes are produced by humans every day. There are 4.57 billion active internet users around the world and it will continue to grow <span class="citation">(Bulao <a href="#ref-bulao" role="doc-biblioref">2020</a>)</span>.</p>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-bulao">
+<p>Bulao, Jacquelyn. 2020. “How Much Data Is Created Every Day in 2020.” <a href="https://techjury.net/blog/how-much-data-is-created-every-day/">https://techjury.net/blog/how-much-data-is-created-every-day/</a>.</p>
+</div>
 </div>
             </section>
 

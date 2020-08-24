@@ -1,9 +1,17 @@
 # Introduction 
 
-It was March 2020, still traumatize that Andrew Yang drop-out from the presidential race. The only candidate that is data informed and very original. The other headline news during these time frame were about Syrian Civil War, Coronavirus pandemic, European migrant crisis, and the presidential race in the United States [@headline]. 
+```{r 01-globe_env, include=FALSE, echo=FALSE}
+# Add a common class name for every chunks
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
 
-I was very optimistic that United States will not have a pandemic in any of its states or properties. At the same time, I was amazed at the many dashboards that were created to monitor the spread of Covid-19 globally. Below is an example code of how easy it is to pull information and create a visual map,
+It was March 2020, still traumatized that Andrew Yang drop-out from the presidential race. The only candidate that is data informed and very original. The other headline news during this time frame were about Syrian Civil War, Coronavirus pandemic, European migrant crisis, and the presidential race in the United States [@headline]. 
 
+I was very optimistic that the United States will not have a pandemic in any of its states or properties. At the same time, I was amazed at the many dashboards that were created to monitor the spread of Covid-19 globally. Below is an example code of how easy it is to pull information and create a visual map.
 
 ```{r 01-env}
 library(COVID19)
@@ -11,37 +19,42 @@ library(dplyr)
 library(DT)
 library(knitr)
 library(kableExtra)
+
 # grab data from library COVID19
 X <- covid19(verbose = FALSE)
-MarchCovid <- X %>% filter(date == "2020-03-31") %>% 
+
+MarchCovid <- X %>% 
+  filter(date == "2020-03-31") %>% 
   select(
     administrative_area_level_1,
     date,
     confirmed,
     recovered,
-    deaths
-  ) %>% arrange(desc(confirmed)) %>% 
+    deaths) %>% 
+  arrange(desc(confirmed)) %>% 
     rename(country = 
              administrative_area_level_1)
+
 ## Turn to table
 MarchCovid[1:10, ] %>% 
   kable(caption = 'March 2020 Covid19 Metrics') %>%   
   kable_styling()
 ```
 
+I started the Data Science Specialization when Covid-19 cases were below 200,000 in the US. These numbers affected people's lives, their families, loved ones and neighbors. It changes the way we shop, travel, and live. It made us value our homes and the kitchen became the center of the house again.   
 
-I started the Data Science Specialization when Covid-19 cases were below 200,000 in the US. These numbers affected peoples lives, their families, love ones and neighbors. It change the way we shop, travel, and live. It made us value our homes and the kitchen became the center of the house again.   
-
-Map visualization can be accomplish with many packages available in R.  One of them is called leaflet package and below will show us how aggressive the spread of Covid19 through out the globe during the end of **March 2020**. 
+Map visualization can be accomplish with many packages available in R.  One of them is called leaflet package and below will show us how aggressive the spread of Covid19 throughout the globe during the end of **March 2020**. 
 
 ```{r 01-mapLeaflet, fig.cap='End of March - Covid19 [@leaflet]'}
 library(leaflet)
 library(viridisLite)
 library(viridis)
+
 # Create a map using Leaflet
 mapVisData <- X %>% 
   filter(date == "2020-03-31") %>%    
-  rename(country=administrative_area_level_1)  %>% 
+  rename(country=
+           administrative_area_level_1)  %>% 
   select(country,
           date,
           longitude,
@@ -49,11 +62,14 @@ mapVisData <- X %>%
           confirmed,
           recovered,
           deaths)
+
 # Color code with viridislite and viridis
 CountryColor <- colorFactor(
-  viridis(76), mapVisData$country)
+  viridis(76), 
+  mapVisData$country)
 
-Figure_1.1 <- leaflet(data = mapVisData) %>% 
+Figure_1.1 <- leaflet(
+  data = mapVisData) %>% 
   addTiles() %>% 
   setView(lng = 26.8206,
         lat = 30.8025,
@@ -86,6 +102,4 @@ Figure_1.1 <- leaflet(data = mapVisData) %>%
 Figure_1.1
 ```
 
-At the beginning of the class, I was not able to code the way I code in R now. The progression and knowledge skills increase as I consume more of the information. Again, I had vivid dreams while taking these classes and if you decided to pursue the same route, may you have sweetest of all dreams. I hope this book gets you through the night.  
-
-
+At the beginning of the class, I was not able to code the way I code in R now. The progression and knowledge skills increase as I consume more of the information. Again, I had vivid dreams while taking these classes and if you decided to pursue the same route, may you have the sweetest of all dreams. I hope this book gets you through the night.  
